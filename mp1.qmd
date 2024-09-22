@@ -348,7 +348,7 @@ USAGE_AND_FINANCIALS |>
 ```
 
 #### Q2.Which transit system (agency and mode) had the highest farebox recovery, defined as the highest ratio of Total Fares to Expenses?
-Ferryboat managed by Port Imperial Ferry Corp. had the highest farebox recovery ratio of 1.43.
+In 2022, ferryboat managed by Port Imperial Ferry Corp. had the highest farebox recovery ratio of 1.43.
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 #agency and mode (large transit systems only)
 
@@ -370,7 +370,7 @@ USAGE_AND_FINANCIALS |>
 ```
 
 #### Q3.Which transit system (agency and mode) has the lowest expenses per UPT?
-
+In 2022, North Carolina State University Bus had the lowest expenses per UPT of $1.18. 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 #agency and mode (large transit systems only)
 
@@ -390,7 +390,7 @@ USAGE_AND_FINANCIALS |>
 ```
 
 #### Q4.Which transit system (agency and mode) has the highest total fares per UPT?
-
+In 2022, ferryboat managed by Cape May Lewes Ferry garnered the highest total fares per UPT of $9.23.
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 #agency and mode (large transit systems only)
 
@@ -410,7 +410,7 @@ USAGE_AND_FINANCIALS |>
 ```
 
 #### Q5.Which transit system (agency and mode) has the lowest expenses per VRM?
-
+In 2022, Vanpool managed by Metropolitan Transportation Commission achieved the lowest expenses per VRM of $0.44.
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 #agency and mode (large transit systems only)
 
@@ -430,7 +430,7 @@ USAGE_AND_FINANCIALS |>
 ```
 
 #### Q6.Which transit system (agency and mode) has the highest total fares per VRM?
-
+In 2022, ferryboat managed by Cape May Lewes Ferry achieved higher fares per VRM than any other large transit system with UPT of at least 400,000.
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 #agency and mode (large transit systems only)
 
