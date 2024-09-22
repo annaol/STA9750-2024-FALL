@@ -348,7 +348,7 @@ USAGE_AND_FINANCIALS |>
 ```
 
 #### Q2.Which transit system (agency and mode) had the highest farebox recovery, defined as the highest ratio of Total Fares to Expenses?
-
+Ferryboat managed by Port Imperial Ferry Corp. had the highest farebox recovery ratio of 1.43.
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 #agency and mode (large transit systems only)
 
