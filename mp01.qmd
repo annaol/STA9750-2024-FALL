@@ -284,8 +284,8 @@ USAGE |>
 
 ## Additional Analysis of Transit Data
 In this part, I conducted additional analysis of transit usage data as instructed in [Task 4](https://michael-weylandt.com/STA9750/miniprojects/mini01.html#:~:text=Task%204%3A%20Explore%20and%20Analyze). Focusing on MTA New York City Transit, I analyzed the relative popularity of different transporation options over the years and discovered the following:  
-1)  Based on the share of UPT, subway has been, by far, the most popular mode of transportation. In any given year, its relative share of UPT is at least 2X of the second most used transit mode.
-2)  Moreover, based on the changes in the share of UPT, NYC subway usage has been slowly increasing over the years. Between 2002 and 2023, it gained 9 percentage points in relative share, going from 68.1% of total to 76.6% of total, respectively.  
+1)  Based on the share of UPT, subway has been, by far, the most popular mode of transportation. In any given year, its relative share of UPT is at least 2X of the second most used transit mode share.  
+2)  Moreover, based on the changes in the share of UPT, NYC subway usage has been slowly increasing over the years. Between 2002 and 2023, it gained 9 percentage points in relative share, going from 68.1% of total to 76.8% of total, respectively.  
 3)  At the same time, there has been a corresponding decrease in Bus trips. Between 2002 and 2023, it lost 10 percentage points in relative share, going from 31.9% of total to 21.6% of total, respectively.  
 4)  Bus Rapid Transit and Commuter Bus are newer modes of transportation, with data on their usage not available until 2012.
 
