@@ -156,6 +156,7 @@ library(gt)
 USAGE |>
   group_by(Agency) |>
   summarize(Total_VRM = sum(VRM, na.rm = TRUE)) |>
+  ungroup() |>
   mutate(Total_VRM = comma(Total_VRM, digits = 0)) |>
   slice_max(Total_VRM, n = 3) |>
   gt() |>
@@ -175,6 +176,7 @@ library(gt)
 USAGE |>
   group_by(Agency) |>
   summarize(Total_VRM = sum(VRM, na.rm = TRUE)) |>
+  ungroup() |>
   mutate(Total_VRM = comma(Total_VRM, digits = 0)) |>
   slice_max(Total_VRM, n = 3) |>
   gt() |>
@@ -189,6 +191,7 @@ With over 49 billion vehicle revenue miles, bus has the most total VRM of all tr
 USAGE |>
   group_by(Mode) |>
   summarize(Total_VRM = sum(VRM, na.rm = TRUE)) |>
+  ungroup() |>
   mutate(Total_VRM = comma(Total_VRM, digits = 0)) |>
   slice_max(Total_VRM, n = 3) |>
   gt() |>
@@ -201,6 +204,7 @@ _Please see below for the code used to generate the aforementioned results:_
 USAGE |>
   group_by(Mode) |>
   summarize(Total_VRM = sum(VRM, na.rm = TRUE)) |>
+  ungroup() |>
   mutate(Total_VRM = comma(Total_VRM, digits = 0)) |>
   slice_max(Total_VRM, n = 3) |>
   gt() |>
@@ -220,6 +224,7 @@ USAGE |>
     Month == "2024-05-01"
   ) |>
   summarize(Total_UPT = sum(UPT, na.rm = TRUE)) |>
+  ungroup() |>
   mutate(Total_UPT = comma(Total_UPT, digits = 0)) |>
   gt() |>
   tab_header(
@@ -235,6 +240,7 @@ USAGE |>
     Month == "2024-05-01"
   ) |>
   summarize(Total_UPT = sum(UPT, na.rm = TRUE)) |>
+  ungroup() |>
   mutate(Total_UPT = comma(Total_UPT, digits = 0)) |>
   gt() |>
   tab_header(
@@ -252,6 +258,7 @@ USAGE |>
     April20_Trips = sum(dplyr::case_when(Month == "2020-04-01" ~ UPT, TRUE ~ 0), na.rm = TRUE),
     Pct_Change = (April20_Trips - April19_Trips) / April19_Trips
   ) |>
+  ungroup() |>
   mutate(
     Pct_Change = scales::percent(Pct_Change),
     April19_Trips = comma(April19_Trips, digits = 0),
@@ -271,6 +278,7 @@ USAGE |>
     April20_Trips = sum(dplyr::case_when(Month == "2020-04-01" ~ UPT, TRUE ~ 0), na.rm = TRUE),
     Pct_Change = (April20_Trips - April19_Trips) / April19_Trips
   ) |>
+  ungroup() |>
   mutate(
     Pct_Change = scales::percent(Pct_Change),
     April19_Trips = comma(April19_Trips, digits = 0),
@@ -463,6 +471,7 @@ USAGE_AND_FINANCIALS |>
   group_by(Transit_System) |>
   filter(sum(Total_UPT, na.rm = TRUE) >= 400000) |>
   summarise(UPT = sum(Total_UPT)) |>
+  ungroup() |>
   mutate(UPT = comma(UPT, digits = 0)) |>
   slice_max(UPT, n = 3) |>
   gt() |>
@@ -478,6 +487,7 @@ USAGE_AND_FINANCIALS |>
   group_by(Transit_System) |>
   filter(sum(Total_UPT, na.rm = TRUE) >= 400000) |>
   summarise(UPT = sum(Total_UPT)) |>
+  ungroup() |>
   mutate(UPT = comma(UPT, digits = 0)) |>
   slice_max(UPT, n = 3) |>
   gt() |>
@@ -529,10 +539,10 @@ USAGE_AND_FINANCIALS |>
   unite(Transit_System, c("Agency", "Mode")) |>
   group_by(Transit_System) |>
   filter(sum(Total_UPT, na.rm = TRUE) >= 400000) |>
-  summarise(Expenses_PER_UPT = sum(Expenses, na.rm = TRUE) / sum(Total_UPT, na.rm = TRUE)) |>
-  mutate(Expenses_PER_UPT = scales::dollar(Expenses_PER_UPT)) |>
+  summarise(Expenses_per_UPT = sum(Expenses, na.rm = TRUE) / sum(Total_UPT, na.rm = TRUE)) |>
   ungroup() |>
-  slice_min(Expenses_PER_UPT, n = 3) |>
+  slice_min(Expenses_per_UPT, n = 3) |>
+  mutate(Expenses_per_UPT = scales::dollar(Expenses_per_UPT)) |>
   gt() |>
   tab_header(
     title = "Top 3 Transit Systems by Expenses per UPT",
@@ -545,10 +555,10 @@ USAGE_AND_FINANCIALS |>
   unite(Transit_System, c("Agency", "Mode")) |>
   group_by(Transit_System) |>
   filter(sum(Total_UPT, na.rm = TRUE) >= 400000) |>
-  summarise(Expenses_PER_UPT = sum(Expenses, na.rm = TRUE) / sum(Total_UPT, na.rm = TRUE)) |>
-  mutate(Expenses_PER_UPT = scales::dollar(Expenses_PER_UPT)) |>
+  summarise(Expenses_Per_UPT = sum(Expenses, na.rm = TRUE) / sum(Total_UPT, na.rm = TRUE)) |>
   ungroup() |>
-  slice_min(Expenses_PER_UPT, n = 3) |>
+  slice_min(Expenses_Per_UPT, n = 3) |>
+  mutate(Expenses_Per_UPT = scales::dollar(Expenses_Per_UPT)) |>
   gt() |>
   tab_header(
     title = "Top 3 Transit Systems by Expenses per UPT",
