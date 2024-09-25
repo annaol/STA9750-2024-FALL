@@ -3,7 +3,6 @@ title: "Mini-Project 01: Fiscal Characteristics of Major US Public Transit Syste
 ---
 In this paper, we will look at high-level fiscal performance of US public transit systems. This work is not meant to be an in-depth analysis of the stated topic but rather an introductory, high-level overview. We will use data from the [National Transit Database](https://www.transit.dot.gov/ntd) to  analyze main indicators of usage and financial performance and determine what constitutes efficiency.  
 Data sources used and data availability and limitations are documented in detail in the assignment and could be accessed [here](https://michael-weylandt.com/STA9750/miniprojects/mini01.html#:~:text=several%20different%20tables%3A).
-TESTTEST
 
 ## Initial data preparation
 
