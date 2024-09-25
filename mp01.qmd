@@ -284,7 +284,7 @@ USAGE |>
 
 ## Additional Analysis of Transit Data
 In this part, I conducted additional analysis of transit usage data as instructed in [Task 4](https://michael-weylandt.com/STA9750/miniprojects/mini01.html#:~:text=Task%204%3A%20Explore%20and%20Analyze). Focusing on MTA New York City Transit, I analyzed the relative popularity of different transporation options over the years and discovered the following:  
-1)  Based on the share of UPT, subway has been, by far, the most popular mode of transportation. In any given year, its relative share of UPT is at least 2X of the second most used transit mode share.  
+1)  Based on the share of UPT, subway has been, by far, the most popular mode of transportation. In any given year, its relative share of UPT is at least 2X of that of the second most used transit mode, Bus.  
 2)  Moreover, based on the changes in the share of UPT, NYC subway usage has been slowly increasing over the years. Between 2002 and 2023, it gained 9 percentage points in relative share, going from 68.1% of total to 76.8% of total, respectively.  
 3)  At the same time, there has been a corresponding decrease in Bus trips. Between 2002 and 2023, it lost 10 percentage points in relative share, going from 31.9% of total to 21.6% of total, respectively.  
 4)  Bus Rapid Transit and Commuter Bus are newer modes of transportation, with data on their usage not available until 2012.
@@ -336,7 +336,6 @@ _(Relative share of UPT is calculated as UPT of a given mode over total annual U
 
 _Please see below for the code used to generate aforementioned results:_
 ```{r echo=TRUE, warning=FALSE, message=FALSE, results='hide'}
-
 # create df with annual totals
 
 nyc_annual_df <- USAGE |>
@@ -385,7 +384,6 @@ nyc_mode_df_pivoted |>
 In this part, I created a summary usage table for 2022 and joined it with available financial data (per [Task 5](https://michael-weylandt.com/STA9750/miniprojects/mini01.html#:~:text=Task%205%3A%20Table%20Summarization)). The resulting dataset is provided for review after the code block.
 
 ```{r echo=TRUE, warning=FALSE, message=FALSE}
-
 # code used to generate financial and usage summary table for 2022
 
 # create 2022 usage data
@@ -438,7 +436,7 @@ FINANCIALS2 <- FINANCIALS |>
     TRUE ~ "Unknown"
   ))
 
-#join financial and usage data
+# join financial and usage data
 
 USAGE_AND_FINANCIALS <- left_join(
   USAGE_2022_ANNUAL,
@@ -447,7 +445,7 @@ USAGE_AND_FINANCIALS <- left_join(
 ) |>
   drop_na()
 
-#review the data
+# review the data
 
 sample_n(USAGE_AND_FINANCIALS, 1132) |>
   DT::datatable()
@@ -500,7 +498,7 @@ USAGE_AND_FINANCIALS |>
   summarise(Farebox_Recovery = sum(`Total Fares`, na.rm = TRUE) / sum(Expenses, na.rm = TRUE)) |>
   ungroup() |>
   slice_max(Farebox_Recovery, n = 3) |>
-  mutate(Farebox_Recovery =scales::percent(Farebox_Recovery, digits=2)) |>
+  mutate(Farebox_Recovery = scales::percent(Farebox_Recovery, accuracy = 0.1)) |>
   gt() |>
   tab_header(
     title = "Top 3 Transit Systems by Farebox Recovery",
@@ -516,7 +514,7 @@ USAGE_AND_FINANCIALS |>
   summarise(Farebox_Recovery = sum(`Total Fares`, na.rm = TRUE) / sum(Expenses, na.rm = TRUE)) |>
   ungroup() |>
   slice_max(Farebox_Recovery, n = 3) |>
-  mutate(Farebox_Recovery =scales::percent(Farebox_Recovery, digits=2)) |>
+  mutate(Farebox_Recovery = scales::percent(Farebox_Recovery, accuracy = 0.1)) |>
   gt() |>
   tab_header(
     title = "Top 3 Transit Systems by Farebox Recovery",
