@@ -498,9 +498,9 @@ USAGE_AND_FINANCIALS |>
   group_by(Transit_System) |>
   filter(sum(Total_UPT, na.rm = TRUE) >= 400000) |>
   summarise(Farebox_Recovery = sum(`Total Fares`, na.rm = TRUE) / sum(Expenses, na.rm = TRUE)) |>
-  mutate(Farebox_Recovery = comma(Farebox_Recovery, digits=2)) |>
   ungroup() |>
   slice_max(Farebox_Recovery, n = 3) |>
+  mutate(Farebox_Recovery =scales::percent(Farebox_Recovery, digits=2)) |>
   gt() |>
   tab_header(
     title = "Top 3 Transit Systems by Farebox Recovery",
@@ -514,9 +514,9 @@ USAGE_AND_FINANCIALS |>
   group_by(Transit_System) |>
   filter(sum(Total_UPT, na.rm = TRUE) >= 400000) |>
   summarise(Farebox_Recovery = sum(`Total Fares`, na.rm = TRUE) / sum(Expenses, na.rm = TRUE)) |>
-  mutate(Farebox_Recovery = comma(Farebox_Recovery, digits=2)) |>
   ungroup() |>
   slice_max(Farebox_Recovery, n = 3) |>
+  mutate(Farebox_Recovery =scales::percent(Farebox_Recovery, digits=2)) |>
   gt() |>
   tab_header(
     title = "Top 3 Transit Systems by Farebox Recovery",
@@ -559,16 +559,16 @@ USAGE_AND_FINANCIALS |>
 ```
 
 #### Q4.Which transit system (agency and mode) has the highest total fares per UPT?
-In 2022, ferryboat managed by Cape May Lewes Ferry garnered the highest total fares per UPT of $9.23 per unlinked passenger trip.
+In 2022, commuter bus managed by Hampton Jitney Inc. garnered the highest total fares per UPT of $41.30 per unlinked passenger trip.
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 USAGE_AND_FINANCIALS |>
   unite(Transit_System, c("Agency", "Mode")) |>
   group_by(Transit_System) |>
   filter(sum(Total_UPT, na.rm = TRUE) >= 400000) |>
   summarise(Fares_per_UPT = sum(`Total Fares`, na.rm = TRUE) / sum(Total_UPT, na.rm = TRUE)) |>
-  mutate(Fares_per_UPT = scales::dollar(Fares_per_UPT)) |>
   ungroup() |>
   slice_max(Fares_per_UPT, n = 3) |>
+  mutate(Fares_per_UPT = scales::dollar(Fares_per_UPT)) |>
   gt() |>
   tab_header(
     title = "Top 3 Transit Systems by Fares per UPT",
@@ -582,9 +582,9 @@ USAGE_AND_FINANCIALS |>
   group_by(Transit_System) |>
   filter(sum(Total_UPT, na.rm = TRUE) >= 400000) |>
   summarise(Fares_per_UPT = sum(`Total Fares`, na.rm = TRUE) / sum(Total_UPT, na.rm = TRUE)) |>
-  mutate(Fares_per_UPT = scales::dollar(Fares_per_UPT)) |>
   ungroup() |>
   slice_max(Fares_per_UPT, n = 3) |>
+  mutate(Fares_per_UPT = scales::dollar(Fares_per_UPT)) |>
   gt() |>
   tab_header(
     title = "Top 3 Transit Systems by Fares per UPT",
@@ -600,9 +600,9 @@ USAGE_AND_FINANCIALS |>
   group_by(Transit_System) |>
   filter(sum(Total_UPT, na.rm = TRUE) >= 400000) |>
   summarise(Expenses_per_VRM = sum(Expenses, na.rm = TRUE) / sum(Total_VRM, na.rm = TRUE)) |>
-  mutate(Expenses_per_VRM = scales::dollar(Expenses_per_VRM)) |>
   ungroup() |>
   slice_min(Expenses_per_VRM, n = 3) |>
+  mutate(Expenses_per_VRM = scales::dollar(Expenses_per_VRM)) |>
   gt() |>
   tab_header(
     title = "Top 3 Transit Systems by Expenses per VRM",
@@ -616,9 +616,9 @@ USAGE_AND_FINANCIALS |>
   group_by(Transit_System) |>
   filter(sum(Total_UPT, na.rm = TRUE) >= 400000) |>
   summarise(Expenses_per_VRM = sum(Expenses, na.rm = TRUE) / sum(Total_VRM, na.rm = TRUE)) |>
-  mutate(Expenses_per_VRM = scales::dollar(Expenses_per_VRM)) |>
   ungroup() |>
   slice_min(Expenses_per_VRM, n = 3) |>
+  mutate(Expenses_per_VRM = scales::dollar(Expenses_per_VRM)) |>
   gt() |>
   tab_header(
     title = "Top 3 Transit Systems by Expenses per VRM",
@@ -627,16 +627,16 @@ USAGE_AND_FINANCIALS |>
 ```
 
 #### Q6.Which transit system (agency and mode) has the highest total fares per VRM?
-In 2022, ferryboat managed by Cape May Lewes Ferry achieved higher fares per VRM than any other large transit system with UPT of at least 400,000.
+In 2022, ferryboat managed by Jacksonville Transporation Authority achieved higher fares per VRM than any other large transit system with UPT of at least 400,000.
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 USAGE_AND_FINANCIALS |>
   unite(Transit_System, c("Agency", "Mode")) |>
   group_by(Transit_System) |>
   filter(sum(Total_UPT, na.rm = TRUE) >= 400000) |>
   summarise(Fares_per_VRM = sum(`Total Fares`, na.rm = TRUE) / sum(Total_VRM, na.rm = TRUE)) |>
-  mutate(Fares_per_VRM = scales::dollar(Fares_per_VRM)) |>
   ungroup() |>
   slice_max(Fares_per_VRM, n = 3) |>
+  mutate(Fares_per_VRM = scales::dollar(Fares_per_VRM)) |>
   gt() |>
   tab_header(
     title = "Top 3 Transit Systems by Fares per VRM",
@@ -650,9 +650,9 @@ USAGE_AND_FINANCIALS |>
   group_by(Transit_System) |>
   filter(sum(Total_UPT, na.rm = TRUE) >= 400000) |>
   summarise(Fares_per_VRM = sum(`Total Fares`, na.rm = TRUE) / sum(Total_VRM, na.rm = TRUE)) |>
-  mutate(Fares_per_VRM = scales::dollar(Fares_per_VRM)) |>
   ungroup() |>
   slice_max(Fares_per_VRM, n = 3) |>
+  mutate(Fares_per_VRM = scales::dollar(Fares_per_VRM)) |>
   gt() |>
   tab_header(
     title = "Top 3 Transit Systems by Fares per VRM",
@@ -661,4 +661,4 @@ USAGE_AND_FINANCIALS |>
 ```
 
 #### Conclusion
-The farebox recovery ratio is one of the key metrics used to evaluate financial performance of transit systems ([Source](https://www.transitwiki.org/TransitWiki/index.php/Farebox_Recovery_Ratio)). With the farebox recovery ratio of 1.43, the ferryboat managed by Port Imperial Ferry Corporation appeared to be the most efficient large transit system in 2022.
+The farebox recovery ratio is one of the key metrics used to evaluate financial performance of transit systems ([Source](https://www.transitwiki.org/TransitWiki/index.php/Farebox_Recovery_Ratio)). With the farebox recovery ratio of 142.8%, the ferryboat managed by Port Imperial Ferry Corporation appeared to be the most efficient large transit system in 2022.
