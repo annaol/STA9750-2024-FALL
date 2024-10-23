@@ -2,7 +2,8 @@
 ---
 title: "Mini-Project 02: Business of Show Business"
 ---
-In this paper, we will analyze the IMDB data to answer some questions, design a measurement framework for evaluating performance and identify an opportunity for investment. 
+In this paper, we will analyze the IMDB data to answer some questions, design a measurement framework for evaluating performance and identify an opportunity for investment.  
+
 #### Data Prep  
 In this section, we obtain and prepare data for analysis. Because of the memory and performance issues, we will use small files and further down-select data to enable a more fluid analysis. We will drop titles with fewer than 100 ratings and individuals who worked on only 1 title.  
 __Installing and Loading Libraries__
@@ -133,7 +134,8 @@ title_basics <- title_basics |>
   mutate(
     startYear = as.numeric(startYear),
     endYear = as.numeric(endYear),
-    runtimeMinutes = as.numeric(runtimeMinutes)
+    runtimeMinutes = as.numeric(runtimeMinutes),
+    isAdult=as.logical(isAdult)
   ) |>
   rename(
     start_year = startYear,
@@ -207,6 +209,7 @@ glimpse(name_basics)
 #### Task 2 - Instructor-Provided Questions  
 ###### Q1. How many movies are in our data set? How many TV series? How many TV episodes?
 To answer this question, we will use the `title basics` data set, which contains release and production information.  
+Content type is captured in the `titleType` column. We have 131,662 movies, 29,789 TV Series and 155,722 TV episodes.
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 # get a count of records by content types
@@ -242,7 +245,7 @@ fig_content_count_type <- fig_content_count_type |>
 
 fig_content_count_type
 ```
-Content type is captured in the `titleType` column. We have 131,662 movies, 29,789 TV Series and 155,722 TV episodes.
+_(Please note it's an interactive chart - hover over it for interaction options.)_
 
 ###### Q2. Who is the oldest living person in our data set?
 To answer this question, we will use the `name basics` table, which has birth and death records. However, a quick examination of data highlights certain irregularities in death records. It appears that we are missing actual death records for a number of individuals who, despite being born prior to the 20th century, are appear to still be alive. 
@@ -291,6 +294,8 @@ fig_cnt_living_persons <- fig_cnt_living_persons |>
 
 fig_cnt_living_persons
 ```
+_(Please note it's an interactive chart - hover over it for interaction options.)_
+
 Since we can't manually verify verify hundreds of questionable records, we will have to use a rule-based approach to answer this question. The oldest verified person to have ever lived was 122 years and 164 days at the time of death so using this age as a threshold, we can filter out all individuals born after 1902, which leaves us with 65 individuals born in 1903.
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 # list count of living persons by year of birth
@@ -315,6 +320,7 @@ df4 <- name_basics |>
 sample_n(df4, 65) |>
   DT::datatable()
 ```
+
 
 
 ###### Q3. There is one TV Episode in this data set with a perfect 10/10 rating and 200,000 IMDb ratings. What is it? What series does it belong to?
@@ -409,11 +415,10 @@ ep_filtered_series <- inner_join(title_episodes, list_tv_series, by = c("parentT
 
 series_num_epis <- ep_filtered_series |>
   group_by(parentTconst, primaryTitle, titleType) |>
-  summarise(num_episodes = n()) |>
+  summarise(number_of_episodes = n()) |>
   ungroup() |>
-  arrange(desc(num_episodes)) |>
-  filter(num_episodes >= 12)
-
+  arrange(desc(number_of_episodes)) |>
+  filter(number_of_episodes >= 12) 
 
 datatable(series_num_epis)
 ```
@@ -437,13 +442,13 @@ ep_filtered_series_ratings2 <- inner_join(ep_filtered_series_ratings,
 
 ep_filtered_series_ratings2 |>
   group_by(parentTconst, primaryTitle.x) |>
-  summarise(avg_rating = mean(averageRating)) |>
+  summarise(average_rating = mean(averageRating)) |>
   ungroup() |>
   rename(
     tv_series_id = parentTconst,
     tv_series_title = primaryTitle.x
   ) |>
-  arrange(desc(avg_rating)) |>
+  arrange(desc(average_rating)) |>
   head(5) |>
   gt() |>
   tab_header(
@@ -470,7 +475,9 @@ hd_detail_ratings <- inner_join(hd_detail, title_ratings, by = "tconst")
 
 datatable(hd_detail_ratings)
 ```
-Now that we have detailed records on all episodes of the `Happy Days` TV series, we can calculate the average rating for each season.
+Now that we have detailed records on all episodes of the `Happy Days` TV series, we can calculate the average rating for each season.  
+It appears that the earlier seasons of the series indeed had higher average ratings compared to the more recent seasons.  
+
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 # create df with average rating by season
 
@@ -500,21 +507,21 @@ fig_hd_seasons <- fig_hd_seasons |>
 
 fig_hd_seasons
 ```
-It appears that the earlier seasons of the series indeed had higher average ratings compared to the more recent seasons.  
+_(Please note it's an interactive chart - hover over it for interaction options.)_
 
 #### Task 3
 >Design a ‘success’ measure for IMDb entries, reflecting both quality and broad popular awareness.  
 
-As we found in Q1 in Task1, movies constitute the absolute majority of records in our data - 131.6K records vs 29.8K for TV series, the next largest category of content. We do not include TV episode in this analysis as TV episodes are not a standalone content.
+As we found in Q1 in Task1, movies constitute the absolute majority of records in our data - 131.6K records vs 29.8K for TV series, the next largest category of content. We do not include TV episode in this analysis as TV episodes are not a standalone content. Given the obvious differences in production, marketing, and audience appeal, we will focus on movies for this part of the exercise.
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 
 # plot number of records by content type from the earlier question
 
 fig_content_count_type
 ```
-Given the obvious differences in production, marketing, and audience appeal, we will focus on movies for this part of the exercise.  
+_(Please note it's an interactive chart - hover over it for interaction options.)_
+  
 Let's start with creating a data frame with ratings data for movies. 
-
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 # create df with list of all movies
 
@@ -575,6 +582,7 @@ fig_hist_avg_ratings <- plot_ly(
 
 fig_hist_avg_ratings
 ```
+_(Please note it's an interactive chart - hover over it for interaction options.)_
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 # histogram of average ratings
@@ -597,6 +605,7 @@ fig_distr_number_ratings <- plot_ly(
 
 fig_distr_number_ratings
 ```
+_(Please note it's an interactive chart - hover over it for interaction options.)_
 
 Looking at descriptive statistics and statistical plots, we can see that most titles have relatively high average ratings. 50% of all titles have a rating above 6.1, and top 25% of titles have a rating over 6.8. Distribution of number of ratings, on the other hand, has a right skew, meaning that we have only a handful of titles with a very high number of votes.  
 Since we need to design a blended performance metric, we need to account for quality and popularity of a title simultaneously which can be done by an averaging of these two metrics. Before we proceed, we need to standardize the data to account for differences in magnitude and distribution of ratings and votes variables:
@@ -679,7 +688,7 @@ movie_ratings_df4_pi |>
   gt()
 ```
 
-Performance index penalizes titles with subpar, i.e., below average, popularity and/or quality. 47% of movies in our data set have negative performance index.
+Performance index penalizes titles with subpar, i.e., below average, popularity and/or quality. 47% of movies in our data set have negative performance index. 
 
 ###### Performance Index Validation
 >1.Choose the top 5-10 movies on your metric and confirm that they were indeed box office successes.
@@ -700,7 +709,7 @@ mrdf |>
 ```
 
 
-Among top 5 movies based on performance index, four (with the exception of __The Shawshank Redemption__) were commercial successes, and __The Shawshank Redemption__ is still widely considered to be one of the beloved and most critically acclaimed movies of all times.  
+Among top 5 movies based on performance index, four (with the exception of _The Shawshank Redemption_) were commercial successes, and _The Shawshank Redemption_ is still widely considered to be one of the beloved and most critically acclaimed movies of all times.  
 
 >2. Choose 3-5 movies with large numbers of IMDb votes that score poorly on your success metric and confirm that they are indeed of low quality.
 
@@ -781,7 +790,7 @@ quantile(movie_ratings_df4$performance_index, probs = c(0,0.125,0.375,0.625,0.87
 
 >4. Perform at least one other form of ‘spot check’ validation.
 
-**Avatar**, the highest-grossing movie of all times ($2.9B worldwide gross) has a performance index of 13.2, which puts it in top 1% of our data set.
+_Avatar_, the highest-grossing movie of all times ($2.9B worldwide gross) has a performance index of 13.2, which puts it in top 1% of our data set.
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 
 #select performance index and title
@@ -852,7 +861,7 @@ fig_decade <- fig_decade |>
 fig_decade
 
 ```
-
+_(Please note it's an interactive chart - hover over it for interactive options.)_
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 
@@ -890,6 +899,7 @@ fig_genres <- fig_genres |>
 fig_genres
 
 ```
+_(Please note it's an interactive chart - hover over it for interactive options.)_
 
 We have a very large number of genres with only a handful of titles, so we can exclude these records from our data set to ensure our analysis is as robust as possible.
 
@@ -1021,8 +1031,9 @@ fig_top20g <- plot_ly(movie_ratings_df4_decade_genres_filtered,
 fig_top20g
 
 ```
+_(Please note it's an interactive chart - hover over it for interactive options.)_
 
-Documentary has produced most successful titles since 2010.
+Documentary has produced most successful titles since 2010 (1883 titles) and it has the best success rate of all genres..
 
 >4.What genre has become more popular in recent years?
 
@@ -1034,7 +1045,7 @@ __Based on success rate, documentary is a clear standout and should be prioritiz
 
 >Identify (at least) two actors and one director who you will target as the key talent for your movie. Write a short “pitch” as to why they are likely to be successful. You should support your pitch with at least one graphic and one table.
 
-Since we are going to be developing a documentary title, we need to adjust this question a bit and identify a director-writer-producer team as opposed to a director-actors team. 
+Since we are going to be developing a documentary title, we need to adjust this question a bit and identify a director-writer team as opposed to a director-actors team. 
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 
@@ -1077,11 +1088,8 @@ and number_of_votes>=5000
     ;
   "
   )  
-  
-datatable(doc_df1)
 
-```
-```{r}
+# calculate performance statistics for director-writer teams
 
 doc_df2<-sqldf(
 "
@@ -1100,7 +1108,7 @@ order by 4 desc
   "
   )
 
-doc_df2
+datatable(doc_df2)
 
 ```
 Looking at the high-performing documentaries from 1970s - present, 3 film makers have produced multiple successful titles: Werner Herzog, Michael Moore and the director-writer duo of Sophie Fiennes and Slavoj Zizek. Since we need to identify a team for our next project, we propose to approach the Fiennes-Zizek duo as they have already demonstrated they can successfully work together, which might not be the case for established solo creators Moore and Herzog. 
@@ -1117,9 +1125,6 @@ fig_movie_team<-plot_ly(data=doc_df2,
                         type = 'scatter',
                         mode = 'markers',
                         color=~movie_team
-                        #,
-                        # width = 500,
-                        #height = 500
                         ) |>
    layout(
     title = "Movie Team Performance Comparison",
@@ -1131,8 +1136,6 @@ fig_movie_team<-plot_ly(data=doc_df2,
     x = 0.5,            # Center horizontally
     xanchor = 'center', # Align center
     y = -0.2
-    #,           # Position below the plot
-   # font = list(size =8 )  # Smaller font size
     )
   )
  
@@ -1144,16 +1147,12 @@ Titles produced by Moore and Herzog appear to have a higher awareness among view
 ###### Task 6: Finding a Classic Movie to Remake
 >Find a classic movie to remake with your key talent. The original should have a large number of IMDb ratings, a high average rating, and not have been remade in the past 25 years.
 
-When looking at the top documentary titles, __Super Size Me_ is a definite outlier:
->Super Size Me premiered at the 2004 Sundance Film Festival, where Morgan Spurlock won the Grand Jury Prize for directing the film.The film opened in the US on May 7, 2004, and grossed a total of $11,536,423 worldwide, making it the 7th highest-grossing documentary film of all time.It was nominated for an Academy Award for Best Documentary Feature and won the award for Best Documentary Screenplay from the Writers Guild of America. 
-
-([Source](https://en.wikipedia.org/wiki/Super_Size_Me))
-
-A 2017 title  __Super Size Me 2: Holy Chicken!__ from the same director also performed reasonably well, even in the light of certain issues with with publicity and distribution. It's important to note that this film was not a remake of a original title as it was focused on the process of opening a fast-food restaurant.
+When looking at the top documentary titles, _Super Size Me_ is a definite outlier:
+Super Size Me premiered at the 2004 Sundance Film Festival, where Morgan Spurlock won the Grand Jury Prize for directing the film.The film opened in the US on May 7, 2004, and grossed a total of $11,536,423 worldwide, making it the 7th highest-grossing documentary film of all time.It was nominated for an Academy Award for Best Documentary Feature and won the award for Best Documentary Screenplay from the Writers Guild of America. ([Source](https://en.wikipedia.org/wiki/Super_Size_Me)).  
+A 2017 title  _Super Size Me 2: Holy Chicken!_ from the same director also performed reasonably well, even in the light of certain issues with with publicity and distribution. It's important to note that this film was not a remake of a original title as it was focused on the process of opening a fast-food restaurant.
 ([Source](https://en.wikipedia.org/wiki/Super_Size_Me_2:_Holy_Chicken!))  
 Given the success of the 2004 'Super Size Me' and increasing popularity of the semaglutide drugs, we should consider making a documentary about a weight loss journey and impact of taking this medicine on one's life, health and mind - a 'Super Size Me' journey in reverse. While this movie was released 20 years ago, cultural context, relevancy and timeliness play a huge role in documentary titles success, and for this topic the time is definitely now. Another reason to pursue this opportunity now is an unhappy one as Morgan Spurlock, the writer and director of both 'Super Size Me' titles, died in May of this year so re imagining his most famous work could serve as a tribute to Spurlock's many talents and the impact his vision and creative genius left on our society.
-As a possible contributor to our project, We can consider Lee Fulkerson, who wrote and directed an award-winning and highly acclaimed documentary __Forks Over Knives__ as he has already successfully explored the topic of self-improvement in his 2011 movie (performance index of 0.73).
-
+As a possible contributor to our project, we can consider Lee Fulkerson, who wrote and directed an award-winning and highly acclaimed documentary _Forks Over Knives_ as he has already successfully explored the topic of self-improvement in his 2011 movie (performance index of 0.73).
 
 ###### Task 7: Write and Deliver Your Pitch
 From Sophie Fiennes and Slavoj Zizek, the masters of philosophical and psychoanalytical exploration, and Lee Fulkerson, the visionary mind behind an inspiring story of human transformation, inspired by a critically acclaimed hit _Super Size Me_, comes the modern take on a timeless tale of metamorphosis, obsession and  desire to be perfect at any cost. _XXS Me: The Beginning_ coming to Netflix in December 2025.
