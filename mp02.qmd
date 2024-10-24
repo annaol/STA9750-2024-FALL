@@ -1089,9 +1089,9 @@ select director_name,
 writer_name,
 director_name||'-'||writer_name as movie_team,
 count(title_id) as cnt_movies,
-avg(performance_index) as avg_performance_index,
-avg(average_rating) as avg_rating,
-avg(number_of_votes) as avg_number_of_ratings
+round(avg(performance_index),2) as avg_performance_index,
+round(avg(average_rating),1) as avg_rating,
+round(avg(number_of_votes),0) as avg_number_of_ratings
 from doc_df1
 group by 1,2,3
 having count(title_id)>1
