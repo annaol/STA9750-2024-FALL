@@ -1,0 +1,579 @@
+
+---
+title: "Unemployment in New York"
+---
+
+
+#### Data Prep  
+In this section, we obtain and prepare data for analysis.   
+__Installing and Loading Libraries__
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# Installing and loading libraries
+
+if (!require("tidyverse")) install.packages("tidyverse")
+library(tidyverse)
+if (!require("DT")) install.packages("DT")
+library(DT)
+if (!require("dplyr")) install.packages("dplyr")
+library(dplyr)
+if (!require("psych")) install.packages("psych")
+library(psych)
+if (!require("gt")) install.packages("gt")
+library(gt)
+if (!require("formattable")) install.packages("formattable")
+library(formattable)
+if (!require("sqldf")) install.packages("sqldf")
+library(sqldf)
+if (!require("plotly")) install.packages("plotly")
+library(plotly)
+if (!require("ggplot2")) install.packages("ggplot2")
+library(ggplot2)
+if (!require("RColorBrewer")) install.packages("RColorBrewer")
+library(RColorBrewer)
+if (!require("fredr")) install.packages("fredr")
+library(fredr)
+if (!require("tidycensus")) install.packages("tidycensus")
+library(tidycensus)
+if (!require("httr2")) install.packages("httr2")
+library(httr2)
+if (!require("readr")) install.packages("readr")
+library(readr)
+if (!require("sf")) install.packages("sf")
+library(sf)
+if (!require("fredr")) install.packages("fredr")
+library(fredr)
+if (!require("tmap")) install.packages("tmap")
+library(tmap)
+```
+__Reading in API Key__
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+# Load the FRED API key from a local file
+fred_api_key <- readLines("fred.txt")
+fredr_set_key(fred_api_key)
+
+```
+
+###### Getting Shape Files  
+__County__
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+
+## counties
+
+if(!file.exists("nyc_borough_boundaries.zip")){
+    download.file("https://data.cityofnewyork.us/api/geospatial/tqmj-j8zm?method=export&format=Shapefile", 
+              destfile="nyc_borough_boundaries.zip",
+              method="curl")
+}
+
+##-
+td <- tempdir(); 
+zip_contents <- unzip("nyc_borough_boundaries.zip", 
+                      exdir = td)
+    
+fname_shp <- zip_contents[grepl("shp$", zip_contents)]
+nyc_county_sf <- read_sf(fname_shp)
+nyc_county_sf
+
+
+```
+
+__zip codes __
+```{r}
+
+### 
+
+if(!file.exists("zipcodes_maps.zip")){
+    download.file("https://www2.census.gov/geo/tiger/GENZ2018/shp/cb_2018_us_zcta510_500k.zip", 
+              destfile="zipcodes_maps.zip",
+              method="curl")
+}
+
+##-
+td <- tempdir(); 
+zip_contents <- unzip("zipcodes_maps.zip", 
+                      exdir = td)
+    
+fname_shp <- zip_contents[grepl("shp$", zip_contents)]
+nyc_zip_codes_sf <- read_sf(fname_shp)
+nyc_zip_codes_sf
+
+```
+
+
+__nyc zip codes mapping doc__
+
+```{r}
+
+# here's a list of NYC zipcodes 
+url <- "https://raw.githubusercontent.com/erikgregorywebb/nyc-housing/master/Data/nyc-zip-codes.csv"
+
+response <- request(url) %>%
+  req_perform()
+
+file_path <- "nyc-zip-codes.csv"
+
+writeBin(response$body, file_path)
+nyc_zip_codes_list <- read_csv(file_path)
+
+head(nyc_zip_codes_list)
+```
+
+```{r}
+
+nyc_zip_codes_list<-nyc_zip_codes_list|>
+  mutate(zcta=as.character(ZipCode))
+
+
+nyc_zip_codes_sf2<-inner_join(nyc_zip_codes_sf,
+                              nyc_zip_codes_list,by=c("GEOID10"="zcta")
+                              ) |>
+  select(GEOID10,Borough,Neighborhood,geometry)
+
+head(nyc_zip_codes_sf2)
+
+```
+
+#### FRED API DATA
+
+```{r}
+
+# Search for unemployment rate data series for NY counties
+search_results <- fredr_series_search_text("unemployment rate county") 
+
+# Filter for NY counties
+ny_counties <- search_results %>%
+  filter(grepl(", NY$", title, ignore.case = TRUE))  # Match titles ending with ", NY"
+
+# Display the list of NY counties and their series IDs
+ny_counties_list <- ny_counties %>%
+  select(id, title)
+print(ny_counties_list)
+
+# Fetch data for all NY counties
+ny_unemployment_data <- lapply(ny_counties$id, function(series_id) {
+  data <- fredr(
+    series_id = series_id,
+    observation_start = as.Date("2000-01-01"),  # Start date
+    observation_end = as.Date("2023-12-31") ,    # End date
+  frequency         = "a",           # "a" for annual
+    aggregation_method = "avg"   
+    )
+  data$county <- ny_counties$title[ny_counties$id == series_id]  # Add county name
+  return(data)
+}) %>%
+  bind_rows()  # Combine all data into a single data frame
+
+# View a snippet of the data
+head(ny_unemployment_data)
+
+
+```
+### clean up - only keep NYC counties
+```{r}
+#### filter to NYC counties
+
+list_of_ny_counties<-c("New York","Bronx","Kings","Queens","Richmond")
+unrate<-"Unemployment Rate in "
+ny_var<-" County, NY"
+
+ny_list <- rep(ny_var, 5)
+unrate_list<-rep(unrate,5)
+
+
+ny_combined_list <- mapply(function(x, y,z) paste(x, y,z, sep = ""), unrate_list,
+                           list_of_ny_counties,ny_list,SIMPLIFY = FALSE)
+
+# Filter 
+ny_unrate_county_filtered <- ny_unemployment_data %>% 
+  filter(county %in% ny_combined_list)
+
+ny_unrate_county_filtered<-ny_unrate_county_filtered |>
+  mutate(county2=sub("Unemployment Rate in ", "", county),
+         county3=sub(", NY","",county2)) |>
+  select(date,value,county3)
+
+head(ny_unrate_county_filtered)
+```
+
+
+```{r}
+### there are several instances of multiple rates for the same county/year - we'll take avg
+###  
+
+ny_unrate_county_filtered2<-ny_unrate_county_filtered |>
+  group_by(county3,date) |>
+  summarise(unrate=mean(value)) |>
+  ungroup()
+
+nyc_county_unrate_annual<-ny_unrate_county_filtered2 |>
+  mutate(year = year(as.Date(date))) |>
+  mutate(county_name = case_when(
+    county3 == "New York County" ~ "Manhattan",
+    county3 == "Bronx County" ~ "Bronx",
+    county3 == "Kings County" ~ "Brooklyn",
+    county3 == "Queens County" ~ "Queens",
+    county3 == "Richmond County" ~ "Staten Island",
+    TRUE ~ "Unknown"
+  )) 
+
+head(nyc_county_unrate_annual)
+
+```
+###### animated plot - county-level  
+
+```{r}
+###  create a df tmap
+
+tmap_nyc_county_unrate_annual<-left_join(nyc_county_unrate_annual,
+                                         nyc_county_sf,
+                                         by=c("county_name"="boro_name"))
+
+tmap_nyc_county_unrate_annual2<-tmap_nyc_county_unrate_annual|>
+  select(year,unrate,county_name,geometry) 
+
+  tmap_nyc_county_unrate_annual2$label<-paste(tmap_nyc_county_unrate_annual2$county_name,
+                                              tmap_nyc_county_unrate_annual2$unrate,
+                                              sep=": "
+                                              )
+
+```
+
+### NYC unemployemt over the years - animated plot
+```{r}
+### join maps data for tmap
+
+tmap_mode("plot")
+
+
+map <- tmap_nyc_county_unrate_annual2 |>
+  st_as_sf() |>
+  tm_shape() +
+  tm_polygons("unrate", 
+              title = "Unemployment Rate", 
+              palette = "Greys",  # Adjust palette as desired
+              style = "cont") +   # Continuous scale
+  tm_facets(along = "year", free.coords = FALSE) +
+  tm_text("label", size = 1, col = "red", fontface = "bold")
+
+tmap_animation(map, 
+               filename = "nyc_unemployment2.gif", 
+               width = 800, 
+               height = 600, 
+               delay = 30) # Adjust delay as desired
+```
+```{r}
+
+knitr::include_graphics("nyc_unemployment2.gif")
+
+```
+
+
+
+
+
+
+
+
+
+
+
+#### NYC Unemployment - ZIP code level
+
+###### get unrate by zip code from census data as it's unavailable in fred
+```{r}
+# get a list of all variables from 5 year estimates
+variables <- load_variables(year = 2022, dataset = "acs5", cache = TRUE)
+variables
+```
+
+```{r, eval=FALSE}
+
+# test data for 1 year    
+
+unemployment_data <- get_acs(
+    geography = "zcta",  # ZIP Code Tabulation Areas
+    variables = c(
+      unemployed = "B23025_005E",  # civilian labor force: Unemployed
+      labor_force = "B23025_003E",  # total civilian labor force
+      total_population_16plus="B23025_001E", # total population 16+
+      employed = "B23025_004E"  # civilian labor force: employed
+       ),
+    year = 2011,  # Specify the ACS year
+    survey = "acs5"  # 5-year estimates
+  )
+```
+
+```{r}
+## loop for all years - available from 2011 to 2022
+years <- lst(2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022)
+
+#list of NYC zipcodes
+zctas <- as.list(as.character(nyc_zip_codes_list$ZipCode)) 
+
+# Initialize an empty list to store results
+results  <- list()
+
+# Loop through each year
+for (year in years) {
+  message("Fetching data for year: ", year)  # Print progress
+  
+  tryCatch({
+    # Fetch ACS data for the current year
+    data <- get_acs(
+      geography = "zcta",  # ZIP Code Tabulation Areas
+      variables = c(
+        unemployed = "B23025_005E",  # Civilian labor force: Unemployed
+        labor_force = "B23025_003E",  # Total civilian labor force
+        total_population_16plus = "B23025_001E",  # Total population 16+
+        employed = "B23025_004E",  # Civilian labor force: Employed
+      median_income="B19013_001E"
+        ),
+      year = year,
+      survey = "acs5"  # 5-year estimates
+    )
+    
+    # Store the data in the results list
+    results[[as.character(year)]] <- data
+  }, error = function(e) {
+    message("Error fetching data for year: ", year, ": ", e$message)
+  })
+}
+
+# Combine all results into a single dataframe
+combined_data <- bind_rows(results, .id = "year")
+
+combined_data$zcta<-gsub("ZCTA5 ","",combined_data$NAME)
+#head(combined_data)
+
+nyc_zip_codes<-nyc_zip_codes_list |>
+  mutate(zcta=as.character(ZipCode))
+
+combined_data_nyc<-inner_join(combined_data,nyc_zip_codes_list, by=c("zcta"="zcta"))
+
+#vars_df<-as.data.frame(variables)
+#head(vars_df)
+#
+#
+combined_data_nyc2 <- combined_data_nyc %>%
+      mutate(variable2 = recode(variable,
+                               "B23025_005" = "unemployed",
+                               "B23025_003" = "labor_force",
+                               "B23025_001" = "total_population_16plus",
+                               "B23025_004" = "employed",
+                               "B19013_001"="median_income"
+                               ))
+
+## create a df with unemployed totals only
+unemployed_df<-combined_data_nyc2 |>
+  filter(variable2=='unemployed') |>
+  select(year,estimate,zcta) |>
+  rename(unemployed=estimate)
+
+## create a df with labor force total only
+laborforce_df<-combined_data_nyc2 |>
+  filter(variable2=='labor_force') |>
+  select(year,estimate,zcta) |>
+  rename(laborforce=estimate)
+
+## create a df with median income total only
+median_income_df<-combined_data_nyc2 |>
+  filter(variable2=='median_income') |>
+  select(year,estimate,zcta) |>
+  rename(median_income=estimate)
+
+
+nyc_unrate_zip_df<-inner_join(unemployed_df,
+                              laborforce_df,
+                              by=c("year"="year","zcta"="zcta"))
+
+nyc_unrate_inc_zip_df<-inner_join(nyc_unrate_zip_df,
+                              median_income_df,
+                              by=c("year"="year","zcta"="zcta"))
+
+nyc_unrate_inc_zip_df<-nyc_unrate_inc_zip_df |>
+  mutate(unrate=round(unemployed/laborforce,2))
+
+
+
+## join zip code data and zip sf file
+
+zip_unrate_inc_for_sf<-left_join(nyc_unrate_inc_zip_df,
+                             nyc_zip_codes_sf2,
+                             by=c("zcta"="GEOID10") )
+head(zip_unrate_inc_for_sf)
+```
+
+
+```{r}
+
+tmap_zip_unrate_inc_for_sf<-zip_unrate_inc_for_sf|>
+  select(year,unrate,median_income, Neighborhood,geometry) 
+
+```
+
+### NYC unemployemt over the years - animated plot
+```{r}
+### join maps data for tmap
+
+tmap_mode("plot")
+
+
+map <- tmap_zip_unrate_inc_for_sf |>
+  st_as_sf() |>
+  tm_shape() +
+  tm_polygons("median_income", 
+              title = "Median Income", 
+              palette = "Greys",  # Adjust palette as desired
+              style = "cont") +   # Continuous scale
+  tm_facets(along = "year", free.coords = FALSE) 
+ # tm_text("label", size = 1, col = "red", fontface = "bold")
+
+tmap_animation(map, 
+               filename = "nyc_zip_median_income.gif", 
+               width = 800, 
+               height = 600, 
+               delay = 30) # Adjust delay as desired
+```
+
+
+
+```{r}
+
+palette_5counties<-c(
+  "dodgerblue2","green4","black","yellow","#E31A1C"
+)
+
+# create a chart
+
+nyc_unrate_annual2011<-nyc_county_unrate_annual|>
+  filter(year>=2011)
+
+nyc_annual_unrate_year_plot <- plot_ly(nyc_unrate_annual2011,
+  x = ~year, y = ~unrate,
+  color = ~county_name,
+  type = "scatter",
+  mode = "lines",
+  colors = palette_5counties
+) |>
+  layout(
+    title = "",
+    xaxis = list(title = ""),
+    yaxis = list(
+      title = ""
+      #,
+  #    tickformat = ".0%",
+  #    range = c(0, 1)
+    ),
+    legend = list(
+      orientation = "h", # Horizontal legend
+      x = 0.5, # Center horizontally
+      xanchor = "center", # Align center
+      y = -0.2, # Position below the plot
+      font = list(size = 8) # Smaller font size
+    )
+  )
+
+# Show the plot
+
+nyc_annual_unrate_year_plot
+
+
+```
+
+
+
+
+
+
+############################# DNU  test for other metrics
+
+###1 year
+
+```{r}
+# test data for 1 year    
+
+unemployment_data <- get_acs(
+    geography = "zcta",  # ZIP Code Tabulation Areas
+    variables = c(
+#      male="S0501_C01_002E",
+#female="S0501_C01_003E"
+      
+median_income="B19013_001E"
+       ),
+    year = 2011,  # Specify the ACS year
+    survey = "acs5"  # 5-year estimates
+  )
+
+
+```
+
+
+
+```{r}
+
+## loop for all years - available until 2022
+years <- lst(2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022)
+
+#list of NYC zipcodes
+zctas <- as.list(as.character(nyc_zip_codes$ZipCode)) 
+
+# Initialize an empty list to store results
+results  <- list()
+
+# Loop through each year
+for (year in years) {
+  message("Fetching data for year: ", year)  # Print progress
+  
+  tryCatch({
+    # Fetch ACS data for the current year
+    data <- get_acs(
+      geography = "zcta",  # ZIP Code Tabulation Areas
+      variables = c(
+        v1="S0501_C01_002E", #
+v2="S0501_C01_003E"
+
+      ),
+      year = year,
+      survey = "acs5"  # 5-year estimates
+    )
+    
+    # Store the data in the results list
+    results[[as.character(year)]] <- data
+  }, error = function(e) {
+    message("Error fetching data for year: ", year, ": ", e$message)
+  })
+}
+
+# Combine all results into a single dataframe
+combined_data <- bind_rows(results, .id = "year")
+
+combined_data$zcta<-gsub("ZCTA5 ","",combined_data$NAME)
+#head(combined_data)
+
+nyc_zip_codes<-nyc_zip_codes |>
+  mutate(zcta=as.character(ZipCode))
+
+combined_data_nyc<-inner_join(combined_data,nyc_zip_codes, by=c("zcta"="zcta"))
+head(combined_data_nyc)
+
+```
+
+
+```{r}
+
+acs_vars <- load_variables(2022, "acs5", cache = TRUE)
+view(acs_vars)  # Browse the available variables
+
+```
+
+
+
+
+
+
+
+
+
