@@ -257,7 +257,8 @@ tmap_animation(map,
 ```
 
 ```{r}
-knitr::include_graphics("C:/Users/olson/Documents/STA9750-2024-FALL/nyc_unemployment2.gif")
+
+knitr::include_graphics("nyc_unemployment2.gif")
 
 ```
 
@@ -417,7 +418,7 @@ tmap_animation(map,
 ```
 
 ```{r}
-knitr::include_graphics("C:/Users/olson/Documents/STA9750-2024-FALL/nyc_zip_median_income.gif")
+knitr::include_graphics("nyc_zip_median_income.gif")
 
 ```
 
@@ -449,7 +450,7 @@ tmap_animation(map,
 ```
 
 ```{r}
-knitr::include_graphics("C:/Users/olson/Documents/STA9750-2024-FALL/nyc_zip_unrate.gif")
+knitr::include_graphics("nyc_zip_unrate.gif")
 
 ```
 
