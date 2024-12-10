@@ -47,6 +47,9 @@ if (!require("fredr")) install.packages("fredr")
 library(fredr)
 if (!require("tmap")) install.packages("tmap")
 library(tmap)
+if (!require("knitr")) install.packages("knitr")
+library(knitr)
+
 ```
 __Reading in API Key__
 ```{r echo=TRUE, warning=FALSE, message=FALSE}

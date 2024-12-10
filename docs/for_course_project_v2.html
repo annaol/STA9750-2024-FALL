@@ -208,7 +208,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"fredr"</span>)) <span class="fu">install.packages</span>(<span class="st">"fredr"</span>)</span>
 <span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fredr)</span>
 <span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"tmap"</span>)) <span class="fu">install.packages</span>(<span class="st">"tmap"</span>)</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"knitr"</span>)) <span class="fu">install.packages</span>(<span class="st">"knitr"</span>)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p><strong>Reading in API Key</strong></p>
@@ -923,23 +925,23 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
 <span id="cb71-21"><a href="#cb71-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">everything</span>()</span>
 <span id="cb71-22"><a href="#cb71-22" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="wlqtdqjxep" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#wlqtdqjxep table {
+<div id="cxcdlqutee" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#cxcdlqutee table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#wlqtdqjxep thead, #wlqtdqjxep tbody, #wlqtdqjxep tfoot, #wlqtdqjxep tr, #wlqtdqjxep td, #wlqtdqjxep th {
+#cxcdlqutee thead, #cxcdlqutee tbody, #cxcdlqutee tfoot, #cxcdlqutee tr, #cxcdlqutee td, #cxcdlqutee th {
   border-style: none;
 }
 
-#wlqtdqjxep p {
+#cxcdlqutee p {
   margin: 0;
   padding: 0;
 }
 
-#wlqtdqjxep .gt_table {
+#cxcdlqutee .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -965,12 +967,12 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   border-left-color: #D3D3D3;
 }
 
-#wlqtdqjxep .gt_caption {
+#cxcdlqutee .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#wlqtdqjxep .gt_title {
+#cxcdlqutee .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -982,7 +984,7 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   border-bottom-width: 0;
 }
 
-#wlqtdqjxep .gt_subtitle {
+#cxcdlqutee .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -994,7 +996,7 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   border-top-width: 0;
 }
 
-#wlqtdqjxep .gt_heading {
+#cxcdlqutee .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1006,13 +1008,13 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   border-right-color: #D3D3D3;
 }
 
-#wlqtdqjxep .gt_bottom_border {
+#cxcdlqutee .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#wlqtdqjxep .gt_col_headings {
+#cxcdlqutee .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1027,7 +1029,7 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   border-right-color: #D3D3D3;
 }
 
-#wlqtdqjxep .gt_col_heading {
+#cxcdlqutee .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1047,7 +1049,7 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   overflow-x: hidden;
 }
 
-#wlqtdqjxep .gt_column_spanner_outer {
+#cxcdlqutee .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1059,15 +1061,15 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   padding-right: 4px;
 }
 
-#wlqtdqjxep .gt_column_spanner_outer:first-child {
+#cxcdlqutee .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#wlqtdqjxep .gt_column_spanner_outer:last-child {
+#cxcdlqutee .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#wlqtdqjxep .gt_column_spanner {
+#cxcdlqutee .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1079,11 +1081,11 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   width: 100%;
 }
 
-#wlqtdqjxep .gt_spanner_row {
+#cxcdlqutee .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#wlqtdqjxep .gt_group_heading {
+#cxcdlqutee .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1109,7 +1111,7 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   text-align: left;
 }
 
-#wlqtdqjxep .gt_empty_group_heading {
+#cxcdlqutee .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1124,15 +1126,15 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   vertical-align: middle;
 }
 
-#wlqtdqjxep .gt_from_md > :first-child {
+#cxcdlqutee .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#wlqtdqjxep .gt_from_md > :last-child {
+#cxcdlqutee .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#wlqtdqjxep .gt_row {
+#cxcdlqutee .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1151,7 +1153,7 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   overflow-x: hidden;
 }
 
-#wlqtdqjxep .gt_stub {
+#cxcdlqutee .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1164,7 +1166,7 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   padding-right: 5px;
 }
 
-#wlqtdqjxep .gt_stub_row_group {
+#cxcdlqutee .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1178,15 +1180,15 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   vertical-align: top;
 }
 
-#wlqtdqjxep .gt_row_group_first td {
+#cxcdlqutee .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#wlqtdqjxep .gt_row_group_first th {
+#cxcdlqutee .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#wlqtdqjxep .gt_summary_row {
+#cxcdlqutee .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1196,16 +1198,16 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   padding-right: 5px;
 }
 
-#wlqtdqjxep .gt_first_summary_row {
+#cxcdlqutee .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#wlqtdqjxep .gt_first_summary_row.thick {
+#cxcdlqutee .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#wlqtdqjxep .gt_last_summary_row {
+#cxcdlqutee .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1215,7 +1217,7 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   border-bottom-color: #D3D3D3;
 }
 
-#wlqtdqjxep .gt_grand_summary_row {
+#cxcdlqutee .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1225,7 +1227,7 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   padding-right: 5px;
 }
 
-#wlqtdqjxep .gt_first_grand_summary_row {
+#cxcdlqutee .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1235,7 +1237,7 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   border-top-color: #D3D3D3;
 }
 
-#wlqtdqjxep .gt_last_grand_summary_row_top {
+#cxcdlqutee .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1245,11 +1247,11 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   border-bottom-color: #D3D3D3;
 }
 
-#wlqtdqjxep .gt_striped {
+#cxcdlqutee .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#wlqtdqjxep .gt_table_body {
+#cxcdlqutee .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1258,7 +1260,7 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   border-bottom-color: #D3D3D3;
 }
 
-#wlqtdqjxep .gt_footnotes {
+#cxcdlqutee .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1272,7 +1274,7 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   border-right-color: #D3D3D3;
 }
 
-#wlqtdqjxep .gt_footnote {
+#cxcdlqutee .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1281,7 +1283,7 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   padding-right: 5px;
 }
 
-#wlqtdqjxep .gt_sourcenotes {
+#cxcdlqutee .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1295,7 +1297,7 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   border-right-color: #D3D3D3;
 }
 
-#wlqtdqjxep .gt_sourcenote {
+#cxcdlqutee .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1303,72 +1305,72 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
   padding-right: 5px;
 }
 
-#wlqtdqjxep .gt_left {
+#cxcdlqutee .gt_left {
   text-align: left;
 }
 
-#wlqtdqjxep .gt_center {
+#cxcdlqutee .gt_center {
   text-align: center;
 }
 
-#wlqtdqjxep .gt_right {
+#cxcdlqutee .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#wlqtdqjxep .gt_font_normal {
+#cxcdlqutee .gt_font_normal {
   font-weight: normal;
 }
 
-#wlqtdqjxep .gt_font_bold {
+#cxcdlqutee .gt_font_bold {
   font-weight: bold;
 }
 
-#wlqtdqjxep .gt_font_italic {
+#cxcdlqutee .gt_font_italic {
   font-style: italic;
 }
 
-#wlqtdqjxep .gt_super {
+#cxcdlqutee .gt_super {
   font-size: 65%;
 }
 
-#wlqtdqjxep .gt_footnote_marks {
+#cxcdlqutee .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#wlqtdqjxep .gt_asterisk {
+#cxcdlqutee .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#wlqtdqjxep .gt_indent_1 {
+#cxcdlqutee .gt_indent_1 {
   text-indent: 5px;
 }
 
-#wlqtdqjxep .gt_indent_2 {
+#cxcdlqutee .gt_indent_2 {
   text-indent: 10px;
 }
 
-#wlqtdqjxep .gt_indent_3 {
+#cxcdlqutee .gt_indent_3 {
   text-indent: 15px;
 }
 
-#wlqtdqjxep .gt_indent_4 {
+#cxcdlqutee .gt_indent_4 {
   text-indent: 20px;
 }
 
-#wlqtdqjxep .gt_indent_5 {
+#cxcdlqutee .gt_indent_5 {
   text-indent: 25px;
 }
 
-#wlqtdqjxep .katex-display {
+#cxcdlqutee .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#wlqtdqjxep div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#cxcdlqutee div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1506,8 +1508,8 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif
 <span id="cb72-37"><a href="#cb72-37" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb72-38"><a href="#cb72-38" aria-hidden="true" tabindex="-1"></a>nyc_annual_unrate_year_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="plotly html-widget html-fill-item" id="htmlwidget-37d122a2f50c168c950e" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-37d122a2f50c168c950e">{"x":{"visdat":{"5c6012906e63":["function () ","plotlyVisDat"]},"cur_data":"5c6012906e63","attrs":{"5c6012906e63":{"x":{},"y":{},"mode":"lines","color":{},"colors":["dodgerblue2","green4","black","yellow","#E31A1C"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Unemployment Rate by NYC Borough","xaxis":{"domain":[0,1],"automargin":true,"title":"Year"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Unemployment Rate"},"legend":{"orientation":"h","x":0.5,"xanchor":"center","y":-0.20000000000000001,"font":{"size":8}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022],"y":[12,12.5,11.699999999999999,9.5,7.5999999999999996,7.0999999999999996,6.2000000000000002,5.7000000000000002,5.4000000000000004,16.050000000000001,13.850000000000001,7.9000000000000004],"mode":"lines","type":"scatter","name":"Bronx","marker":{"color":"rgba(28,134,238,1)","line":{"color":"rgba(28,134,238,1)"}},"textfont":{"color":"rgba(28,134,238,1)"},"error_y":{"color":"rgba(28,134,238,1)"},"error_x":{"color":"rgba(28,134,238,1)"},"line":{"color":"rgba(28,134,238,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022],"y":[9.5999999999999996,9.9000000000000004,9.3000000000000007,7.4500000000000002,5.7999999999999998,5.2999999999999998,4.5999999999999996,4.2000000000000002,4.0999999999999996,12.550000000000001,10.4,5.9000000000000004],"mode":"lines","type":"scatter","name":"Brooklyn","marker":{"color":"rgba(0,139,0,1)","line":{"color":"rgba(0,139,0,1)"}},"textfont":{"color":"rgba(0,139,0,1)"},"error_y":{"color":"rgba(0,139,0,1)"},"error_x":{"color":"rgba(0,139,0,1)"},"line":{"color":"rgba(0,139,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022],"y":[7.9000000000000004,8.0999999999999996,7.5,6,4.7999999999999998,4.5,4,3.7000000000000002,3.5,9.5999999999999996,7.7999999999999998,4.5999999999999996],"mode":"lines","type":"scatter","name":"Manhattan","marker":{"color":"rgba(0,0,0,1)","line":{"color":"rgba(0,0,0,1)"}},"textfont":{"color":"rgba(0,0,0,1)"},"error_y":{"color":"rgba(0,0,0,1)"},"error_x":{"color":"rgba(0,0,0,1)"},"line":{"color":"rgba(0,0,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022],"y":[8.0999999999999996,8.3500000000000014,7.7000000000000002,6.2000000000000002,4.9000000000000004,4.5,3.8999999999999999,3.6000000000000001,3.5,12.5,9.9000000000000004,5.2999999999999998],"mode":"lines","type":"scatter","name":"Queens","marker":{"color":"rgba(255,255,0,1)","line":{"color":"rgba(255,255,0,1)"}},"textfont":{"color":"rgba(255,255,0,1)"},"error_y":{"color":"rgba(255,255,0,1)"},"error_x":{"color":"rgba(255,255,0,1)"},"line":{"color":"rgba(255,255,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022],"y":[9.1999999999999993,9.5500000000000007,8.9499999999999993,7.2999999999999998,5.7000000000000002,5.2000000000000002,4.5999999999999996,4.0999999999999996,3.8999999999999999,10.6,9,5.5999999999999996],"mode":"lines","type":"scatter","name":"Staten Island","marker":{"color":"rgba(227,26,28,1)","line":{"color":"rgba(227,26,28,1)"}},"textfont":{"color":"rgba(227,26,28,1)"},"error_y":{"color":"rgba(227,26,28,1)"},"error_x":{"color":"rgba(227,26,28,1)"},"line":{"color":"rgba(227,26,28,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-5a2270c72c35aadd23a6" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-5a2270c72c35aadd23a6">{"x":{"visdat":{"203830c07d24":["function () ","plotlyVisDat"]},"cur_data":"203830c07d24","attrs":{"203830c07d24":{"x":{},"y":{},"mode":"lines","color":{},"colors":["dodgerblue2","green4","black","yellow","#E31A1C"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Unemployment Rate by NYC Borough","xaxis":{"domain":[0,1],"automargin":true,"title":"Year"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Unemployment Rate"},"legend":{"orientation":"h","x":0.5,"xanchor":"center","y":-0.20000000000000001,"font":{"size":8}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022],"y":[12,12.5,11.699999999999999,9.5,7.5999999999999996,7.0999999999999996,6.2000000000000002,5.7000000000000002,5.4000000000000004,16.050000000000001,13.850000000000001,7.9000000000000004],"mode":"lines","type":"scatter","name":"Bronx","marker":{"color":"rgba(28,134,238,1)","line":{"color":"rgba(28,134,238,1)"}},"textfont":{"color":"rgba(28,134,238,1)"},"error_y":{"color":"rgba(28,134,238,1)"},"error_x":{"color":"rgba(28,134,238,1)"},"line":{"color":"rgba(28,134,238,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022],"y":[9.5999999999999996,9.9000000000000004,9.3000000000000007,7.4500000000000002,5.7999999999999998,5.2999999999999998,4.5999999999999996,4.2000000000000002,4.0999999999999996,12.550000000000001,10.4,5.9000000000000004],"mode":"lines","type":"scatter","name":"Brooklyn","marker":{"color":"rgba(0,139,0,1)","line":{"color":"rgba(0,139,0,1)"}},"textfont":{"color":"rgba(0,139,0,1)"},"error_y":{"color":"rgba(0,139,0,1)"},"error_x":{"color":"rgba(0,139,0,1)"},"line":{"color":"rgba(0,139,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022],"y":[7.9000000000000004,8.0999999999999996,7.5,6,4.7999999999999998,4.5,4,3.7000000000000002,3.5,9.5999999999999996,7.7999999999999998,4.5999999999999996],"mode":"lines","type":"scatter","name":"Manhattan","marker":{"color":"rgba(0,0,0,1)","line":{"color":"rgba(0,0,0,1)"}},"textfont":{"color":"rgba(0,0,0,1)"},"error_y":{"color":"rgba(0,0,0,1)"},"error_x":{"color":"rgba(0,0,0,1)"},"line":{"color":"rgba(0,0,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022],"y":[8.0999999999999996,8.3500000000000014,7.7000000000000002,6.2000000000000002,4.9000000000000004,4.5,3.8999999999999999,3.6000000000000001,3.5,12.5,9.9000000000000004,5.2999999999999998],"mode":"lines","type":"scatter","name":"Queens","marker":{"color":"rgba(255,255,0,1)","line":{"color":"rgba(255,255,0,1)"}},"textfont":{"color":"rgba(255,255,0,1)"},"error_y":{"color":"rgba(255,255,0,1)"},"error_x":{"color":"rgba(255,255,0,1)"},"line":{"color":"rgba(255,255,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022],"y":[9.1999999999999993,9.5500000000000007,8.9499999999999993,7.2999999999999998,5.7000000000000002,5.2000000000000002,4.5999999999999996,4.0999999999999996,3.8999999999999999,10.6,9,5.5999999999999996],"mode":"lines","type":"scatter","name":"Staten Island","marker":{"color":"rgba(227,26,28,1)","line":{"color":"rgba(227,26,28,1)"}},"textfont":{"color":"rgba(227,26,28,1)"},"error_y":{"color":"rgba(227,26,28,1)"},"error_x":{"color":"rgba(227,26,28,1)"},"line":{"color":"rgba(227,26,28,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <section id="dnu-test-for-other-metrics" class="level29">
