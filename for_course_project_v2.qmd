@@ -75,13 +75,13 @@ zip_contents <- unzip("nyc_borough_boundaries.zip",
     
 fname_shp <- zip_contents[grepl("shp$", zip_contents)]
 nyc_county_sf <- read_sf(fname_shp)
-nyc_county_sf
+head(nyc_county_sf)
 
 
 ```
 
 __zip codes __
-```{r}
+```{r echo=TRUE, warning=FALSE, message=FALSE}
 
 ### 
 
@@ -98,14 +98,14 @@ zip_contents <- unzip("zipcodes_maps.zip",
     
 fname_shp <- zip_contents[grepl("shp$", zip_contents)]
 nyc_zip_codes_sf <- read_sf(fname_shp)
-nyc_zip_codes_sf
+head(nyc_zip_codes_sf)
 
 ```
 
 
 __nyc zip codes mapping doc__
 
-```{r}
+```{r echo=TRUE, warning=FALSE, message=FALSE}
 
 # here's a list of NYC zipcodes 
 url <- "https://raw.githubusercontent.com/erikgregorywebb/nyc-housing/master/Data/nyc-zip-codes.csv"
@@ -121,7 +121,7 @@ nyc_zip_codes_list <- read_csv(file_path)
 head(nyc_zip_codes_list)
 ```
 
-```{r}
+```{r echo=TRUE, warning=FALSE, message=FALSE}
 
 nyc_zip_codes_list<-nyc_zip_codes_list|>
   mutate(zcta=as.character(ZipCode))
@@ -138,7 +138,7 @@ head(nyc_zip_codes_sf2)
 
 #### FRED API DATA
 
-```{r}
+```{r echo=TRUE, warning=FALSE, message=FALSE}
 
 # Search for unemployment rate data series for NY counties
 search_results <- fredr_series_search_text("unemployment rate county") 
@@ -166,13 +166,6 @@ ny_unemployment_data <- lapply(ny_counties$id, function(series_id) {
 }) %>%
   bind_rows()  # Combine all data into a single data frame
 
-# View a snippet of the data
-head(ny_unemployment_data)
-
-
-```
-### clean up - only keep NYC counties
-```{r}
 #### filter to NYC counties
 
 list_of_ny_counties<-c("New York","Bronx","Kings","Queens","Richmond")
@@ -195,13 +188,8 @@ ny_unrate_county_filtered<-ny_unrate_county_filtered |>
          county3=sub(", NY","",county2)) |>
   select(date,value,county3)
 
-head(ny_unrate_county_filtered)
-```
 
-
-```{r}
 ### there are several instances of multiple rates for the same county/year - we'll take avg
-###  
 
 ny_unrate_county_filtered2<-ny_unrate_county_filtered |>
   group_by(county3,date) |>
@@ -224,7 +212,7 @@ head(nyc_county_unrate_annual)
 ```
 ###### animated plot - county-level  
 
-```{r}
+```{r echo=TRUE, warning=FALSE, message=FALSE}
 ###  create a df tmap
 
 tmap_nyc_county_unrate_annual<-left_join(nyc_county_unrate_annual,
@@ -242,13 +230,14 @@ tmap_nyc_county_unrate_annual2<-tmap_nyc_county_unrate_annual|>
 ```
 
 ### NYC unemployemt over the years - animated plot
-```{r}
+```{r echo=TRUE, warning=FALSE, message=FALSE}
 ### join maps data for tmap
 
 tmap_mode("plot")
 
 
 map <- tmap_nyc_county_unrate_annual2 |>
+  filter(year>=2011 & year<=2022) |>
   st_as_sf() |>
   tm_shape() +
   tm_polygons("unrate", 
@@ -256,37 +245,31 @@ map <- tmap_nyc_county_unrate_annual2 |>
               palette = "Greys",  # Adjust palette as desired
               style = "cont") +   # Continuous scale
   tm_facets(along = "year", free.coords = FALSE) +
-  tm_text("label", size = 1, col = "red", fontface = "bold")
+  tm_text("label", size = 1, col = "red", fontface = "bold")+
+  tm_layout(frame = FALSE)
 
 tmap_animation(map, 
                filename = "nyc_unemployment2.gif", 
                width = 800, 
                height = 600, 
                delay = 30) # Adjust delay as desired
+
 ```
+
 ```{r}
-
-knitr::include_graphics("nyc_unemployment2.gif")
+knitr::include_graphics("C:/Users/olson/Documents/STA9750-2024-FALL/nyc_unemployment2.gif")
 
 ```
-
-
-
-
-
-
-
-
 
 
 
 #### NYC Unemployment - ZIP code level
 
 ###### get unrate by zip code from census data as it's unavailable in fred
-```{r}
+```{r echo=TRUE, warning=FALSE, message=FALSE}
 # get a list of all variables from 5 year estimates
 variables <- load_variables(year = 2022, dataset = "acs5", cache = TRUE)
-variables
+head(variables)
 ```
 
 ```{r, eval=FALSE}
@@ -306,7 +289,7 @@ unemployment_data <- get_acs(
   )
 ```
 
-```{r}
+```{r echo=TRUE, warning=FALSE, message=FALSE}
 ## loop for all years - available from 2011 to 2022
 years <- lst(2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022)
 
@@ -353,10 +336,6 @@ nyc_zip_codes<-nyc_zip_codes_list |>
 
 combined_data_nyc<-inner_join(combined_data,nyc_zip_codes_list, by=c("zcta"="zcta"))
 
-#vars_df<-as.data.frame(variables)
-#head(vars_df)
-#
-#
 combined_data_nyc2 <- combined_data_nyc %>%
       mutate(variable2 = recode(variable,
                                "B23025_005" = "unemployed",
@@ -384,7 +363,6 @@ median_income_df<-combined_data_nyc2 |>
   select(year,estimate,zcta) |>
   rename(median_income=estimate)
 
-
 nyc_unrate_zip_df<-inner_join(unemployed_df,
                               laborforce_df,
                               by=c("year"="year","zcta"="zcta"))
@@ -394,28 +372,26 @@ nyc_unrate_inc_zip_df<-inner_join(nyc_unrate_zip_df,
                               by=c("year"="year","zcta"="zcta"))
 
 nyc_unrate_inc_zip_df<-nyc_unrate_inc_zip_df |>
-  mutate(unrate=round(unemployed/laborforce,2))
+  mutate(unrate=round(unemployed/laborforce,2), na.rm = TRUE)
 
+nyc_unrate_inc_zip_df <- na.omit(nyc_unrate_inc_zip_df)
+```
 
-
+```{r echo=TRUE, warning=FALSE, message=FALSE}
 ## join zip code data and zip sf file
 
 zip_unrate_inc_for_sf<-left_join(nyc_unrate_inc_zip_df,
                              nyc_zip_codes_sf2,
                              by=c("zcta"="GEOID10") )
-head(zip_unrate_inc_for_sf)
-```
 
-
-```{r}
 
 tmap_zip_unrate_inc_for_sf<-zip_unrate_inc_for_sf|>
-  select(year,unrate,median_income, Neighborhood,geometry) 
+  select(year,unrate,median_income,zcta, Neighborhood,Borough,geometry) 
 
 ```
 
-### NYC unemployemt over the years - animated plot
-```{r}
+### NYC median income/unemployment over the years - animated plot
+```{r echo=TRUE, warning=FALSE, message=FALSE}
 ### join maps data for tmap
 
 tmap_mode("plot")
@@ -426,9 +402,11 @@ map <- tmap_zip_unrate_inc_for_sf |>
   tm_shape() +
   tm_polygons("median_income", 
               title = "Median Income", 
-              palette = "Greys",  # Adjust palette as desired
-              style = "cont") +   # Continuous scale
-  tm_facets(along = "year", free.coords = FALSE) 
+              palette = "Greens",  # Adjust palette as desired
+              style = "cont",
+              fill.na = "red") +   # Continuous scale
+  tm_facets(along = "year", free.coords = FALSE) +
+  tm_layout(frame = FALSE)
  # tm_text("label", size = 1, col = "red", fontface = "bold")
 
 tmap_animation(map, 
@@ -438,9 +416,125 @@ tmap_animation(map,
                delay = 30) # Adjust delay as desired
 ```
 
+```{r}
+knitr::include_graphics("C:/Users/olson/Documents/STA9750-2024-FALL/nyc_zip_median_income.gif")
 
+```
+
+
+### unempoyment x zip
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+### join maps data for tmap
+
+tmap_mode("plot")
+
+
+map <- tmap_zip_unrate_inc_for_sf |>
+  st_as_sf() |>
+  tm_shape() +
+  tm_polygons("unrate", 
+              title = "Unemployment Rate", 
+              palette = "Greys",  # Adjust palette as desired
+              style = "cont",
+              fill.na = "red") +   # Continuous scale
+  tm_facets(along = "year", free.coords = FALSE) +
+  tm_layout(frame = FALSE)
+ # tm_text("label", size = 1, col = "red", fontface = "bold")
+
+tmap_animation(map, 
+               filename = "nyc_zip_unrate.gif", 
+               width = 800, 
+               height = 600, 
+               delay = 30) # Adjust delay as desired
+```
 
 ```{r}
+knitr::include_graphics("C:/Users/olson/Documents/STA9750-2024-FALL/nyc_zip_unrate.gif")
+
+```
+
+
+
+####avg metrics by zip/borough
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+
+
+
+temp_df1<-tmap_zip_unrate_inc_for_sf|>
+  filter(year>=2011 & year<=2022) |>
+  group_by(Borough,Neighborhood) |>
+  summarise(avg_unrate_zip=mean(unrate))|>
+  ungroup()
+
+temp_df2<-tmap_zip_unrate_inc_for_sf|>
+  filter(year>=2011 & year<=2022) |>
+  group_by(Borough) |>
+  summarise(avg_unrate=mean(unrate))|>
+  ungroup()
+
+temp_df3<-left_join(temp_df1,temp_df2,by=c("Borough"="Borough"))
+
+```
+```{r}
+head(temp_df3)
+
+temp_df3 <-temp_df3 |>
+  mutate(delta=round(100*(avg_unrate_zip-avg_unrate),2)
+         )
+
+temp_df4<-sqldf(
+  "
+  with a as (
+  select t.*,
+  row_number() over(partition by Borough order by delta asc ) as rn_min,
+  row_number() over(partition by Borough order by delta desc ) as rn_max
+  from temp_df3 t
+  )
+  
+  select Borough,
+  Neighborhood,
+  avg_unrate,
+  avg_unrate_zip,
+  delta
+  from a
+  where 1=1
+  and (rn_min=1 or rn_max=1)
+  
+  ;
+  "
+)
+
+temp_df4
+```
+
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+temp_df4 |>
+  mutate(avg_unrate=round(avg_unrate,2),
+         avg_unrate_zip=round(avg_unrate_zip,2)
+         ) |>
+  gt() |>
+  tab_header(
+    title = "Average Unemployment Rates by Borough and Neighborhood",
+    subtitle="2011-2022"
+  ) |>
+tab_options(
+    table.font.size = 8,
+    heading.align = "center"
+  ) |>
+  cols_label(
+    avg_unrate = "Borough Rate",
+    avg_unrate_zip= "Neighborhood Rate",
+    delta = "Delta (pp)"
+  ) |>
+  cols_align(
+    align = "left",
+    columns = everything()
+  )
+```
+
+
+
+```{r echo=TRUE, warning=FALSE, message=FALSE}
 
 palette_5counties<-c(
   "dodgerblue2","green4","black","yellow","#E31A1C"
@@ -449,7 +543,8 @@ palette_5counties<-c(
 # create a chart
 
 nyc_unrate_annual2011<-nyc_county_unrate_annual|>
-  filter(year>=2011)
+  filter(year>=2011&year<=2022)|>
+  mutate()
 
 nyc_annual_unrate_year_plot <- plot_ly(nyc_unrate_annual2011,
   x = ~year, y = ~unrate,
@@ -459,10 +554,10 @@ nyc_annual_unrate_year_plot <- plot_ly(nyc_unrate_annual2011,
   colors = palette_5counties
 ) |>
   layout(
-    title = "",
-    xaxis = list(title = ""),
+    title = "Unemployment Rate by NYC Borough",
+    xaxis = list(title = "Year"),
     yaxis = list(
-      title = ""
+      title = "Unemployment Rate"
       #,
   #    tickformat = ".0%",
   #    range = c(0, 1)

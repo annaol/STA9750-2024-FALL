@@ -470,98 +470,66 @@ Geodetic CRS:  NAD83
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> tmap_nyc_county_unrate_annual2 <span class="sc">|&gt;</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>() <span class="sc">+</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="st">"unrate"</span>, </span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">title =</span> <span class="st">"Unemployment Rate"</span>, </span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">palette =</span> <span class="st">"Greys"</span>,  <span class="co"># Adjust palette as desired</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">style =</span> <span class="st">"cont"</span>) <span class="sc">+</span>   <span class="co"># Continuous scale</span></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_facets</span>(<span class="at">along =</span> <span class="st">"year"</span>, <span class="at">free.coords =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_text</span>(<span class="st">"label"</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>)</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_animation</span>(map, </span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>               <span class="at">filename =</span> <span class="st">"nyc_unemployment2.gif"</span>, </span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>               <span class="at">width =</span> <span class="dv">800</span>, </span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">height =</span> <span class="dv">600</span>, </span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>               <span class="at">delay =</span> <span class="dv">30</span>) <span class="co"># Adjust delay as desired</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year<span class="sc">&gt;=</span><span class="dv">2011</span> <span class="sc">&amp;</span> year<span class="sc">&lt;=</span><span class="dv">2022</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>() <span class="sc">+</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="st">"unrate"</span>, </span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">title =</span> <span class="st">"Unemployment Rate"</span>, </span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">palette =</span> <span class="st">"Greys"</span>,  <span class="co"># Adjust palette as desired</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">style =</span> <span class="st">"cont"</span>) <span class="sc">+</span>   <span class="co"># Continuous scale</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_facets</span>(<span class="at">along =</span> <span class="st">"year"</span>, <span class="at">free.coords =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_text</span>(<span class="st">"label"</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>)<span class="sc">+</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">frame =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_animation</span>(map, </span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">filename =</span> <span class="st">"nyc_unemployment2.gif"</span>, </span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>               <span class="at">width =</span> <span class="dv">800</span>, </span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>               <span class="at">height =</span> <span class="dv">600</span>, </span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>               <span class="at">delay =</span> <span class="dv">30</span>) <span class="co"># Adjust delay as desired</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Creating frames</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>=============</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>=======</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>===</code></pre>
+<pre><code>=======</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>===</code></pre>
+<pre><code>======</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>====</code></pre>
+<pre><code>=======</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>===</code></pre>
+<pre><code>=======</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>===</code></pre>
+<pre><code>======</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>====</code></pre>
+<pre><code>=======</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>===</code></pre>
+<pre><code>=======</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>===</code></pre>
+<pre><code>======</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>====</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>===</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>===</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>====</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>===</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>===</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>====</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>===</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>===</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>====</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>===</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>===</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>====</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>===</code></pre>
+<pre><code>=======</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Creating animation
 Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_unemployment2.gif </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"nyc_unemployment2.gif"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"C:/Users/olson/Documents/STA9750-2024-FALL/nyc_unemployment2.gif"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -575,9 +543,9 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_unemployment2.
 <section id="get-unrate-by-zip-code-from-census-data-as-its-unavailable-in-fred" class="level6">
 <h6 class="anchored" data-anchor-id="get-unrate-by-zip-code-from-census-data-as-its-unavailable-in-fred">get unrate by zip code from census data as it’s unavailable in fred</h6>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get a list of all variables from 5 year estimates</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>variables <span class="ot">&lt;-</span> <span class="fu">load_variables</span>(<span class="at">year =</span> <span class="dv">2022</span>, <span class="at">dataset =</span> <span class="st">"acs5"</span>, <span class="at">cache =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(variables)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get a list of all variables from 5 year estimates</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>variables <span class="ot">&lt;-</span> <span class="fu">load_variables</span>(<span class="at">year =</span> <span class="dv">2022</span>, <span class="at">dataset =</span> <span class="st">"acs5"</span>, <span class="at">cache =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(variables)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 4
   name        label                                   concept          geography
@@ -591,142 +559,146 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_unemployment2.
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test data for 1 year    </span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>unemployment_data <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(</span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">geography =</span> <span class="st">"zcta"</span>,  <span class="co"># ZIP Code Tabulation Areas</span></span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">variables =</span> <span class="fu">c</span>(</span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">unemployed =</span> <span class="st">"B23025_005E"</span>,  <span class="co"># civilian labor force: Unemployed</span></span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">labor_force =</span> <span class="st">"B23025_003E"</span>,  <span class="co"># total civilian labor force</span></span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">total_population_16plus=</span><span class="st">"B23025_001E"</span>, <span class="co"># total population 16+</span></span>
-<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">employed =</span> <span class="st">"B23025_004E"</span>  <span class="co"># civilian labor force: employed</span></span>
-<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>       ),</span>
-<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">year =</span> <span class="dv">2011</span>,  <span class="co"># Specify the ACS year</span></span>
-<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">survey =</span> <span class="st">"acs5"</span>  <span class="co"># 5-year estimates</span></span>
-<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test data for 1 year    </span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>unemployment_data <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">geography =</span> <span class="st">"zcta"</span>,  <span class="co"># ZIP Code Tabulation Areas</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">variables =</span> <span class="fu">c</span>(</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">unemployed =</span> <span class="st">"B23025_005E"</span>,  <span class="co"># civilian labor force: Unemployed</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">labor_force =</span> <span class="st">"B23025_003E"</span>,  <span class="co"># total civilian labor force</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">total_population_16plus=</span><span class="st">"B23025_001E"</span>, <span class="co"># total population 16+</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">employed =</span> <span class="st">"B23025_004E"</span>  <span class="co"># civilian labor force: employed</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>       ),</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">year =</span> <span class="dv">2011</span>,  <span class="co"># Specify the ACS year</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">survey =</span> <span class="st">"acs5"</span>  <span class="co"># 5-year estimates</span></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="do">## loop for all years - available from 2011 to 2022</span></span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>years <span class="ot">&lt;-</span> <span class="fu">lst</span>(<span class="dv">2011</span>,<span class="dv">2012</span>,<span class="dv">2013</span>,<span class="dv">2014</span>,<span class="dv">2015</span>,<span class="dv">2016</span>,<span class="dv">2017</span>,<span class="dv">2018</span>,<span class="dv">2019</span>,<span class="dv">2020</span>,<span class="dv">2021</span>,<span class="dv">2022</span>)</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="co">#list of NYC zipcodes</span></span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>zctas <span class="ot">&lt;-</span> <span class="fu">as.list</span>(<span class="fu">as.character</span>(nyc_zip_codes_list<span class="sc">$</span>ZipCode)) </span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize an empty list to store results</span></span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>results  <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through each year</span></span>
-<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (year <span class="cf">in</span> years) {</span>
-<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"Fetching data for year: "</span>, year)  <span class="co"># Print progress</span></span>
-<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
-<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Fetch ACS data for the current year</span></span>
-<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a>    data <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(</span>
-<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">geography =</span> <span class="st">"zcta"</span>,  <span class="co"># ZIP Code Tabulation Areas</span></span>
-<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">variables =</span> <span class="fu">c</span>(</span>
-<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">unemployed =</span> <span class="st">"B23025_005E"</span>,  <span class="co"># Civilian labor force: Unemployed</span></span>
-<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">labor_force =</span> <span class="st">"B23025_003E"</span>,  <span class="co"># Total civilian labor force</span></span>
-<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">total_population_16plus =</span> <span class="st">"B23025_001E"</span>,  <span class="co"># Total population 16+</span></span>
-<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">employed =</span> <span class="st">"B23025_004E"</span>,  <span class="co"># Civilian labor force: Employed</span></span>
-<span id="cb46-23"><a href="#cb46-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">median_income=</span><span class="st">"B19013_001E"</span></span>
-<span id="cb46-24"><a href="#cb46-24" aria-hidden="true" tabindex="-1"></a>        ),</span>
-<span id="cb46-25"><a href="#cb46-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">year =</span> year,</span>
-<span id="cb46-26"><a href="#cb46-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">survey =</span> <span class="st">"acs5"</span>  <span class="co"># 5-year estimates</span></span>
-<span id="cb46-27"><a href="#cb46-27" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb46-28"><a href="#cb46-28" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb46-29"><a href="#cb46-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Store the data in the results list</span></span>
-<span id="cb46-30"><a href="#cb46-30" aria-hidden="true" tabindex="-1"></a>    results[[<span class="fu">as.character</span>(year)]] <span class="ot">&lt;-</span> data</span>
-<span id="cb46-31"><a href="#cb46-31" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
-<span id="cb46-32"><a href="#cb46-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"Error fetching data for year: "</span>, year, <span class="st">": "</span>, e<span class="sc">$</span>message)</span>
-<span id="cb46-33"><a href="#cb46-33" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb46-34"><a href="#cb46-34" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb46-35"><a href="#cb46-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-36"><a href="#cb46-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine all results into a single dataframe</span></span>
-<span id="cb46-37"><a href="#cb46-37" aria-hidden="true" tabindex="-1"></a>combined_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(results, <span class="at">.id =</span> <span class="st">"year"</span>)</span>
-<span id="cb46-38"><a href="#cb46-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-39"><a href="#cb46-39" aria-hidden="true" tabindex="-1"></a>combined_data<span class="sc">$</span>zcta<span class="ot">&lt;-</span><span class="fu">gsub</span>(<span class="st">"ZCTA5 "</span>,<span class="st">""</span>,combined_data<span class="sc">$</span>NAME)</span>
-<span id="cb46-40"><a href="#cb46-40" aria-hidden="true" tabindex="-1"></a><span class="co">#head(combined_data)</span></span>
-<span id="cb46-41"><a href="#cb46-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-42"><a href="#cb46-42" aria-hidden="true" tabindex="-1"></a>nyc_zip_codes<span class="ot">&lt;-</span>nyc_zip_codes_list <span class="sc">|&gt;</span></span>
-<span id="cb46-43"><a href="#cb46-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">zcta=</span><span class="fu">as.character</span>(ZipCode))</span>
-<span id="cb46-44"><a href="#cb46-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-45"><a href="#cb46-45" aria-hidden="true" tabindex="-1"></a>combined_data_nyc<span class="ot">&lt;-</span><span class="fu">inner_join</span>(combined_data,nyc_zip_codes_list, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"zcta"</span><span class="ot">=</span><span class="st">"zcta"</span>))</span>
-<span id="cb46-46"><a href="#cb46-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-47"><a href="#cb46-47" aria-hidden="true" tabindex="-1"></a>combined_data_nyc2 <span class="ot">&lt;-</span> combined_data_nyc <span class="sc">%&gt;%</span></span>
-<span id="cb46-48"><a href="#cb46-48" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">variable2 =</span> <span class="fu">recode</span>(variable,</span>
-<span id="cb46-49"><a href="#cb46-49" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"B23025_005"</span> <span class="ot">=</span> <span class="st">"unemployed"</span>,</span>
-<span id="cb46-50"><a href="#cb46-50" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"B23025_003"</span> <span class="ot">=</span> <span class="st">"labor_force"</span>,</span>
-<span id="cb46-51"><a href="#cb46-51" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"B23025_001"</span> <span class="ot">=</span> <span class="st">"total_population_16plus"</span>,</span>
-<span id="cb46-52"><a href="#cb46-52" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"B23025_004"</span> <span class="ot">=</span> <span class="st">"employed"</span>,</span>
-<span id="cb46-53"><a href="#cb46-53" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"B19013_001"</span><span class="ot">=</span><span class="st">"median_income"</span></span>
-<span id="cb46-54"><a href="#cb46-54" aria-hidden="true" tabindex="-1"></a>                               ))</span>
-<span id="cb46-55"><a href="#cb46-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-56"><a href="#cb46-56" aria-hidden="true" tabindex="-1"></a><span class="do">## create a df with unemployed totals only</span></span>
-<span id="cb46-57"><a href="#cb46-57" aria-hidden="true" tabindex="-1"></a>unemployed_df<span class="ot">&lt;-</span>combined_data_nyc2 <span class="sc">|&gt;</span></span>
-<span id="cb46-58"><a href="#cb46-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(variable2<span class="sc">==</span><span class="st">'unemployed'</span>) <span class="sc">|&gt;</span></span>
-<span id="cb46-59"><a href="#cb46-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year,estimate,zcta) <span class="sc">|&gt;</span></span>
-<span id="cb46-60"><a href="#cb46-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">unemployed=</span>estimate)</span>
-<span id="cb46-61"><a href="#cb46-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-62"><a href="#cb46-62" aria-hidden="true" tabindex="-1"></a><span class="do">## create a df with labor force total only</span></span>
-<span id="cb46-63"><a href="#cb46-63" aria-hidden="true" tabindex="-1"></a>laborforce_df<span class="ot">&lt;-</span>combined_data_nyc2 <span class="sc">|&gt;</span></span>
-<span id="cb46-64"><a href="#cb46-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(variable2<span class="sc">==</span><span class="st">'labor_force'</span>) <span class="sc">|&gt;</span></span>
-<span id="cb46-65"><a href="#cb46-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year,estimate,zcta) <span class="sc">|&gt;</span></span>
-<span id="cb46-66"><a href="#cb46-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">laborforce=</span>estimate)</span>
-<span id="cb46-67"><a href="#cb46-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-68"><a href="#cb46-68" aria-hidden="true" tabindex="-1"></a><span class="do">## create a df with median income total only</span></span>
-<span id="cb46-69"><a href="#cb46-69" aria-hidden="true" tabindex="-1"></a>median_income_df<span class="ot">&lt;-</span>combined_data_nyc2 <span class="sc">|&gt;</span></span>
-<span id="cb46-70"><a href="#cb46-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(variable2<span class="sc">==</span><span class="st">'median_income'</span>) <span class="sc">|&gt;</span></span>
-<span id="cb46-71"><a href="#cb46-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year,estimate,zcta) <span class="sc">|&gt;</span></span>
-<span id="cb46-72"><a href="#cb46-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">median_income=</span>estimate)</span>
-<span id="cb46-73"><a href="#cb46-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-74"><a href="#cb46-74" aria-hidden="true" tabindex="-1"></a>nyc_unrate_zip_df<span class="ot">&lt;-</span><span class="fu">inner_join</span>(unemployed_df,</span>
-<span id="cb46-75"><a href="#cb46-75" aria-hidden="true" tabindex="-1"></a>                              laborforce_df,</span>
-<span id="cb46-76"><a href="#cb46-76" aria-hidden="true" tabindex="-1"></a>                              <span class="at">by=</span><span class="fu">c</span>(<span class="st">"year"</span><span class="ot">=</span><span class="st">"year"</span>,<span class="st">"zcta"</span><span class="ot">=</span><span class="st">"zcta"</span>))</span>
-<span id="cb46-77"><a href="#cb46-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-78"><a href="#cb46-78" aria-hidden="true" tabindex="-1"></a>nyc_unrate_inc_zip_df<span class="ot">&lt;-</span><span class="fu">inner_join</span>(nyc_unrate_zip_df,</span>
-<span id="cb46-79"><a href="#cb46-79" aria-hidden="true" tabindex="-1"></a>                              median_income_df,</span>
-<span id="cb46-80"><a href="#cb46-80" aria-hidden="true" tabindex="-1"></a>                              <span class="at">by=</span><span class="fu">c</span>(<span class="st">"year"</span><span class="ot">=</span><span class="st">"year"</span>,<span class="st">"zcta"</span><span class="ot">=</span><span class="st">"zcta"</span>))</span>
-<span id="cb46-81"><a href="#cb46-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-82"><a href="#cb46-82" aria-hidden="true" tabindex="-1"></a>nyc_unrate_inc_zip_df<span class="ot">&lt;-</span>nyc_unrate_inc_zip_df <span class="sc">|&gt;</span></span>
-<span id="cb46-83"><a href="#cb46-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">unrate=</span><span class="fu">round</span>(unemployed<span class="sc">/</span>laborforce,<span class="dv">2</span>))</span>
-<span id="cb46-84"><a href="#cb46-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-85"><a href="#cb46-85" aria-hidden="true" tabindex="-1"></a><span class="do">## join zip code data and zip sf file</span></span>
-<span id="cb46-86"><a href="#cb46-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-87"><a href="#cb46-87" aria-hidden="true" tabindex="-1"></a>zip_unrate_inc_for_sf<span class="ot">&lt;-</span><span class="fu">left_join</span>(nyc_unrate_inc_zip_df,</span>
-<span id="cb46-88"><a href="#cb46-88" aria-hidden="true" tabindex="-1"></a>                             nyc_zip_codes_sf2,</span>
-<span id="cb46-89"><a href="#cb46-89" aria-hidden="true" tabindex="-1"></a>                             <span class="at">by=</span><span class="fu">c</span>(<span class="st">"zcta"</span><span class="ot">=</span><span class="st">"GEOID10"</span>) )</span>
-<span id="cb46-90"><a href="#cb46-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-91"><a href="#cb46-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-92"><a href="#cb46-92" aria-hidden="true" tabindex="-1"></a>tmap_zip_unrate_inc_for_sf<span class="ot">&lt;-</span>zip_unrate_inc_for_sf<span class="sc">|&gt;</span></span>
-<span id="cb46-93"><a href="#cb46-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year,unrate,median_income, Neighborhood,geometry) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="do">## loop for all years - available from 2011 to 2022</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>years <span class="ot">&lt;-</span> <span class="fu">lst</span>(<span class="dv">2011</span>,<span class="dv">2012</span>,<span class="dv">2013</span>,<span class="dv">2014</span>,<span class="dv">2015</span>,<span class="dv">2016</span>,<span class="dv">2017</span>,<span class="dv">2018</span>,<span class="dv">2019</span>,<span class="dv">2020</span>,<span class="dv">2021</span>,<span class="dv">2022</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="co">#list of NYC zipcodes</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>zctas <span class="ot">&lt;-</span> <span class="fu">as.list</span>(<span class="fu">as.character</span>(nyc_zip_codes_list<span class="sc">$</span>ZipCode)) </span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize an empty list to store results</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>results  <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through each year</span></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (year <span class="cf">in</span> years) {</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"Fetching data for year: "</span>, year)  <span class="co"># Print progress</span></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Fetch ACS data for the current year</span></span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>    data <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(</span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">geography =</span> <span class="st">"zcta"</span>,  <span class="co"># ZIP Code Tabulation Areas</span></span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">variables =</span> <span class="fu">c</span>(</span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">unemployed =</span> <span class="st">"B23025_005E"</span>,  <span class="co"># Civilian labor force: Unemployed</span></span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">labor_force =</span> <span class="st">"B23025_003E"</span>,  <span class="co"># Total civilian labor force</span></span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">total_population_16plus =</span> <span class="st">"B23025_001E"</span>,  <span class="co"># Total population 16+</span></span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">employed =</span> <span class="st">"B23025_004E"</span>,  <span class="co"># Civilian labor force: Employed</span></span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">median_income=</span><span class="st">"B19013_001E"</span></span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">year =</span> year,</span>
+<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">survey =</span> <span class="st">"acs5"</span>  <span class="co"># 5-year estimates</span></span>
+<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb34-29"><a href="#cb34-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Store the data in the results list</span></span>
+<span id="cb34-30"><a href="#cb34-30" aria-hidden="true" tabindex="-1"></a>    results[[<span class="fu">as.character</span>(year)]] <span class="ot">&lt;-</span> data</span>
+<span id="cb34-31"><a href="#cb34-31" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb34-32"><a href="#cb34-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"Error fetching data for year: "</span>, year, <span class="st">": "</span>, e<span class="sc">$</span>message)</span>
+<span id="cb34-33"><a href="#cb34-33" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb34-34"><a href="#cb34-34" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb34-35"><a href="#cb34-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-36"><a href="#cb34-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine all results into a single dataframe</span></span>
+<span id="cb34-37"><a href="#cb34-37" aria-hidden="true" tabindex="-1"></a>combined_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(results, <span class="at">.id =</span> <span class="st">"year"</span>)</span>
+<span id="cb34-38"><a href="#cb34-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-39"><a href="#cb34-39" aria-hidden="true" tabindex="-1"></a>combined_data<span class="sc">$</span>zcta<span class="ot">&lt;-</span><span class="fu">gsub</span>(<span class="st">"ZCTA5 "</span>,<span class="st">""</span>,combined_data<span class="sc">$</span>NAME)</span>
+<span id="cb34-40"><a href="#cb34-40" aria-hidden="true" tabindex="-1"></a><span class="co">#head(combined_data)</span></span>
+<span id="cb34-41"><a href="#cb34-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-42"><a href="#cb34-42" aria-hidden="true" tabindex="-1"></a>nyc_zip_codes<span class="ot">&lt;-</span>nyc_zip_codes_list <span class="sc">|&gt;</span></span>
+<span id="cb34-43"><a href="#cb34-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">zcta=</span><span class="fu">as.character</span>(ZipCode))</span>
+<span id="cb34-44"><a href="#cb34-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-45"><a href="#cb34-45" aria-hidden="true" tabindex="-1"></a>combined_data_nyc<span class="ot">&lt;-</span><span class="fu">inner_join</span>(combined_data,nyc_zip_codes_list, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"zcta"</span><span class="ot">=</span><span class="st">"zcta"</span>))</span>
+<span id="cb34-46"><a href="#cb34-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-47"><a href="#cb34-47" aria-hidden="true" tabindex="-1"></a>combined_data_nyc2 <span class="ot">&lt;-</span> combined_data_nyc <span class="sc">%&gt;%</span></span>
+<span id="cb34-48"><a href="#cb34-48" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">variable2 =</span> <span class="fu">recode</span>(variable,</span>
+<span id="cb34-49"><a href="#cb34-49" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"B23025_005"</span> <span class="ot">=</span> <span class="st">"unemployed"</span>,</span>
+<span id="cb34-50"><a href="#cb34-50" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"B23025_003"</span> <span class="ot">=</span> <span class="st">"labor_force"</span>,</span>
+<span id="cb34-51"><a href="#cb34-51" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"B23025_001"</span> <span class="ot">=</span> <span class="st">"total_population_16plus"</span>,</span>
+<span id="cb34-52"><a href="#cb34-52" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"B23025_004"</span> <span class="ot">=</span> <span class="st">"employed"</span>,</span>
+<span id="cb34-53"><a href="#cb34-53" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"B19013_001"</span><span class="ot">=</span><span class="st">"median_income"</span></span>
+<span id="cb34-54"><a href="#cb34-54" aria-hidden="true" tabindex="-1"></a>                               ))</span>
+<span id="cb34-55"><a href="#cb34-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-56"><a href="#cb34-56" aria-hidden="true" tabindex="-1"></a><span class="do">## create a df with unemployed totals only</span></span>
+<span id="cb34-57"><a href="#cb34-57" aria-hidden="true" tabindex="-1"></a>unemployed_df<span class="ot">&lt;-</span>combined_data_nyc2 <span class="sc">|&gt;</span></span>
+<span id="cb34-58"><a href="#cb34-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(variable2<span class="sc">==</span><span class="st">'unemployed'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb34-59"><a href="#cb34-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year,estimate,zcta) <span class="sc">|&gt;</span></span>
+<span id="cb34-60"><a href="#cb34-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">unemployed=</span>estimate)</span>
+<span id="cb34-61"><a href="#cb34-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-62"><a href="#cb34-62" aria-hidden="true" tabindex="-1"></a><span class="do">## create a df with labor force total only</span></span>
+<span id="cb34-63"><a href="#cb34-63" aria-hidden="true" tabindex="-1"></a>laborforce_df<span class="ot">&lt;-</span>combined_data_nyc2 <span class="sc">|&gt;</span></span>
+<span id="cb34-64"><a href="#cb34-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(variable2<span class="sc">==</span><span class="st">'labor_force'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb34-65"><a href="#cb34-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year,estimate,zcta) <span class="sc">|&gt;</span></span>
+<span id="cb34-66"><a href="#cb34-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">laborforce=</span>estimate)</span>
+<span id="cb34-67"><a href="#cb34-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-68"><a href="#cb34-68" aria-hidden="true" tabindex="-1"></a><span class="do">## create a df with median income total only</span></span>
+<span id="cb34-69"><a href="#cb34-69" aria-hidden="true" tabindex="-1"></a>median_income_df<span class="ot">&lt;-</span>combined_data_nyc2 <span class="sc">|&gt;</span></span>
+<span id="cb34-70"><a href="#cb34-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(variable2<span class="sc">==</span><span class="st">'median_income'</span>) <span class="sc">|&gt;</span></span>
+<span id="cb34-71"><a href="#cb34-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year,estimate,zcta) <span class="sc">|&gt;</span></span>
+<span id="cb34-72"><a href="#cb34-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">median_income=</span>estimate)</span>
+<span id="cb34-73"><a href="#cb34-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-74"><a href="#cb34-74" aria-hidden="true" tabindex="-1"></a>nyc_unrate_zip_df<span class="ot">&lt;-</span><span class="fu">inner_join</span>(unemployed_df,</span>
+<span id="cb34-75"><a href="#cb34-75" aria-hidden="true" tabindex="-1"></a>                              laborforce_df,</span>
+<span id="cb34-76"><a href="#cb34-76" aria-hidden="true" tabindex="-1"></a>                              <span class="at">by=</span><span class="fu">c</span>(<span class="st">"year"</span><span class="ot">=</span><span class="st">"year"</span>,<span class="st">"zcta"</span><span class="ot">=</span><span class="st">"zcta"</span>))</span>
+<span id="cb34-77"><a href="#cb34-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-78"><a href="#cb34-78" aria-hidden="true" tabindex="-1"></a>nyc_unrate_inc_zip_df<span class="ot">&lt;-</span><span class="fu">inner_join</span>(nyc_unrate_zip_df,</span>
+<span id="cb34-79"><a href="#cb34-79" aria-hidden="true" tabindex="-1"></a>                              median_income_df,</span>
+<span id="cb34-80"><a href="#cb34-80" aria-hidden="true" tabindex="-1"></a>                              <span class="at">by=</span><span class="fu">c</span>(<span class="st">"year"</span><span class="ot">=</span><span class="st">"year"</span>,<span class="st">"zcta"</span><span class="ot">=</span><span class="st">"zcta"</span>))</span>
+<span id="cb34-81"><a href="#cb34-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-82"><a href="#cb34-82" aria-hidden="true" tabindex="-1"></a>nyc_unrate_inc_zip_df<span class="ot">&lt;-</span>nyc_unrate_inc_zip_df <span class="sc">|&gt;</span></span>
+<span id="cb34-83"><a href="#cb34-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">unrate=</span><span class="fu">round</span>(unemployed<span class="sc">/</span>laborforce,<span class="dv">2</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb34-84"><a href="#cb34-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-85"><a href="#cb34-85" aria-hidden="true" tabindex="-1"></a>nyc_unrate_inc_zip_df <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(nyc_unrate_inc_zip_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-</section>
-</section>
-<section id="nyc-unemployemt-over-the-years---animated-plot-1" class="level3">
-<h3 class="anchored" data-anchor-id="nyc-unemployemt-over-the-years---animated-plot-1">NYC unemployemt over the years - animated plot</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="do">### join maps data for tmap</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">"plot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>tmap mode set to plotting</code></pre>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="do">## join zip code data and zip sf file</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>zip_unrate_inc_for_sf<span class="ot">&lt;-</span><span class="fu">left_join</span>(nyc_unrate_inc_zip_df,</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>                             nyc_zip_codes_sf2,</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>                             <span class="at">by=</span><span class="fu">c</span>(<span class="st">"zcta"</span><span class="ot">=</span><span class="st">"GEOID10"</span>) )</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>tmap_zip_unrate_inc_for_sf<span class="ot">&lt;-</span>zip_unrate_inc_for_sf<span class="sc">|&gt;</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year,unrate,median_income,zcta, Neighborhood,Borough,geometry) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> tmap_zip_unrate_inc_for_sf <span class="sc">|&gt;</span></span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span></span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>() <span class="sc">+</span></span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="st">"median_income"</span>, </span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">title =</span> <span class="st">"Median Income"</span>, </span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">palette =</span> <span class="st">"Greys"</span>,  <span class="co"># Adjust palette as desired</span></span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">style =</span> <span class="st">"cont"</span>) <span class="sc">+</span>   <span class="co"># Continuous scale</span></span>
-<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_facets</span>(<span class="at">along =</span> <span class="st">"year"</span>, <span class="at">free.coords =</span> <span class="cn">FALSE</span>) </span>
-<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a> <span class="co"># tm_text("label", size = 1, col = "red", fontface = "bold")</span></span>
-<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_animation</span>(map, </span>
-<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">filename =</span> <span class="st">"nyc_zip_median_income.gif"</span>, </span>
-<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a>               <span class="at">width =</span> <span class="dv">800</span>, </span>
-<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>               <span class="at">height =</span> <span class="dv">600</span>, </span>
-<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>               <span class="at">delay =</span> <span class="dv">30</span>) <span class="co"># Adjust delay as desired</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+</section>
+<section id="nyc-median-incomeunemployment-over-the-years---animated-plot" class="level3">
+<h3 class="anchored" data-anchor-id="nyc-median-incomeunemployment-over-the-years---animated-plot">NYC median income/unemployment over the years - animated plot</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="do">### join maps data for tmap</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">"plot"</span>)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> tmap_zip_unrate_inc_for_sf <span class="sc">|&gt;</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>() <span class="sc">+</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="st">"median_income"</span>, </span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">title =</span> <span class="st">"Median Income"</span>, </span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">palette =</span> <span class="st">"Greens"</span>,  <span class="co"># Adjust palette as desired</span></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">style =</span> <span class="st">"cont"</span>,</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill.na =</span> <span class="st">"red"</span>) <span class="sc">+</span>   <span class="co"># Continuous scale</span></span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_facets</span>(<span class="at">along =</span> <span class="st">"year"</span>, <span class="at">free.coords =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">frame =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a> <span class="co"># tm_text("label", size = 1, col = "red", fontface = "bold")</span></span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_animation</span>(map, </span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">filename =</span> <span class="st">"nyc_zip_median_income.gif"</span>, </span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>               <span class="at">width =</span> <span class="dv">800</span>, </span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>               <span class="at">height =</span> <span class="dv">600</span>, </span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>               <span class="at">delay =</span> <span class="dv">30</span>) <span class="co"># Adjust delay as desired</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Creating frames</code></pre>
 </div>
@@ -768,7 +740,9 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_unemployment2.
 Creating animation
 Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_median_income.gif </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"nyc_zip_median_income.gif"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"C:/Users/olson/Documents/STA9750-2024-FALL/nyc_zip_median_income.gif"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -777,103 +751,819 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_median_inc
 </div>
 </div>
 </div>
+</section>
+<section id="unempoyment-x-zip" class="level3">
+<h3 class="anchored" data-anchor-id="unempoyment-x-zip">unempoyment x zip</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>palette_5counties<span class="ot">&lt;-</span><span class="fu">c</span>(</span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"dodgerblue2"</span>,<span class="st">"green4"</span>,<span class="st">"black"</span>,<span class="st">"yellow"</span>,<span class="st">"#E31A1C"</span></span>
-<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a><span class="co"># create a chart</span></span>
-<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>nyc_unrate_annual2011<span class="ot">&lt;-</span>nyc_county_unrate_annual<span class="sc">|&gt;</span></span>
-<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year<span class="sc">&gt;=</span><span class="dv">2011</span>)</span>
-<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a>nyc_annual_unrate_year_plot <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(nyc_unrate_annual2011,</span>
-<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="sc">~</span>year, <span class="at">y =</span> <span class="sc">~</span>unrate,</span>
-<span id="cb64-12"><a href="#cb64-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="sc">~</span>county_name,</span>
-<span id="cb64-13"><a href="#cb64-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"scatter"</span>,</span>
-<span id="cb64-14"><a href="#cb64-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">"lines"</span>,</span>
-<span id="cb64-15"><a href="#cb64-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">colors =</span> palette_5counties</span>
-<span id="cb64-16"><a href="#cb64-16" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb64-17"><a href="#cb64-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(</span>
-<span id="cb64-18"><a href="#cb64-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">""</span>,</span>
-<span id="cb64-19"><a href="#cb64-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">xaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">""</span>),</span>
-<span id="cb64-20"><a href="#cb64-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">yaxis =</span> <span class="fu">list</span>(</span>
-<span id="cb64-21"><a href="#cb64-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">""</span></span>
-<span id="cb64-22"><a href="#cb64-22" aria-hidden="true" tabindex="-1"></a>      <span class="co">#,</span></span>
-<span id="cb64-23"><a href="#cb64-23" aria-hidden="true" tabindex="-1"></a>  <span class="co">#    tickformat = ".0%",</span></span>
-<span id="cb64-24"><a href="#cb64-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">#    range = c(0, 1)</span></span>
-<span id="cb64-25"><a href="#cb64-25" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb64-26"><a href="#cb64-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend =</span> <span class="fu">list</span>(</span>
-<span id="cb64-27"><a href="#cb64-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">orientation =</span> <span class="st">"h"</span>, <span class="co"># Horizontal legend</span></span>
-<span id="cb64-28"><a href="#cb64-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="fl">0.5</span>, <span class="co"># Center horizontally</span></span>
-<span id="cb64-29"><a href="#cb64-29" aria-hidden="true" tabindex="-1"></a>      <span class="at">xanchor =</span> <span class="st">"center"</span>, <span class="co"># Align center</span></span>
-<span id="cb64-30"><a href="#cb64-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="sc">-</span><span class="fl">0.2</span>, <span class="co"># Position below the plot</span></span>
-<span id="cb64-31"><a href="#cb64-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">font =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">8</span>) <span class="co"># Smaller font size</span></span>
-<span id="cb64-32"><a href="#cb64-32" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb64-33"><a href="#cb64-33" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb64-34"><a href="#cb64-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb64-35"><a href="#cb64-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the plot</span></span>
-<span id="cb64-36"><a href="#cb64-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb64-37"><a href="#cb64-37" aria-hidden="true" tabindex="-1"></a>nyc_annual_unrate_year_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="do">### join maps data for tmap</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">"plot"</span>)</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> tmap_zip_unrate_inc_for_sf <span class="sc">|&gt;</span></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>() <span class="sc">+</span></span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="st">"unrate"</span>, </span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">title =</span> <span class="st">"Unemployment Rate"</span>, </span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">palette =</span> <span class="st">"Greys"</span>,  <span class="co"># Adjust palette as desired</span></span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">style =</span> <span class="st">"cont"</span>,</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">fill.na =</span> <span class="st">"red"</span>) <span class="sc">+</span>   <span class="co"># Continuous scale</span></span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_facets</span>(<span class="at">along =</span> <span class="st">"year"</span>, <span class="at">free.coords =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">frame =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a> <span class="co"># tm_text("label", size = 1, col = "red", fontface = "bold")</span></span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_animation</span>(map, </span>
+<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">filename =</span> <span class="st">"nyc_zip_unrate.gif"</span>, </span>
+<span id="cb51-20"><a href="#cb51-20" aria-hidden="true" tabindex="-1"></a>               <span class="at">width =</span> <span class="dv">800</span>, </span>
+<span id="cb51-21"><a href="#cb51-21" aria-hidden="true" tabindex="-1"></a>               <span class="at">height =</span> <span class="dv">600</span>, </span>
+<span id="cb51-22"><a href="#cb51-22" aria-hidden="true" tabindex="-1"></a>               <span class="at">delay =</span> <span class="dv">30</span>) <span class="co"># Adjust delay as desired</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Creating frames</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>=============</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>=======</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>=======</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>======</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>=======</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>=======</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>======</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>=======</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>=======</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>======</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>=======</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Creating animation
+Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_unrate.gif </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"C:/Users/olson/Documents/STA9750-2024-FALL/nyc_zip_unrate.gif"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="plotly html-widget html-fill-item" id="htmlwidget-197485f2270cf44a43d5" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-197485f2270cf44a43d5">{"x":{"visdat":{"68ac70f8be9":["function () ","plotlyVisDat"]},"cur_data":"68ac70f8be9","attrs":{"68ac70f8be9":{"x":{},"y":{},"mode":"lines","color":{},"colors":["dodgerblue2","green4","black","yellow","#E31A1C"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"","xaxis":{"domain":[0,1],"automargin":true,"title":""},"yaxis":{"domain":[0,1],"automargin":true,"title":""},"legend":{"orientation":"h","x":0.5,"xanchor":"center","y":-0.20000000000000001,"font":{"size":8}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023],"y":[12,12.5,11.699999999999999,9.5,7.5999999999999996,7.0999999999999996,6.2000000000000002,5.7000000000000002,5.4000000000000004,16.050000000000001,13.850000000000001,7.9000000000000004,6.7999999999999998],"mode":"lines","type":"scatter","name":"Bronx","marker":{"color":"rgba(28,134,238,1)","line":{"color":"rgba(28,134,238,1)"}},"textfont":{"color":"rgba(28,134,238,1)"},"error_y":{"color":"rgba(28,134,238,1)"},"error_x":{"color":"rgba(28,134,238,1)"},"line":{"color":"rgba(28,134,238,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023],"y":[9.5999999999999996,9.9000000000000004,9.3000000000000007,7.4500000000000002,5.7999999999999998,5.2999999999999998,4.5999999999999996,4.2000000000000002,4.0999999999999996,12.550000000000001,10.4,5.9000000000000004,5.5],"mode":"lines","type":"scatter","name":"Brooklyn","marker":{"color":"rgba(0,139,0,1)","line":{"color":"rgba(0,139,0,1)"}},"textfont":{"color":"rgba(0,139,0,1)"},"error_y":{"color":"rgba(0,139,0,1)"},"error_x":{"color":"rgba(0,139,0,1)"},"line":{"color":"rgba(0,139,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023],"y":[7.9000000000000004,8.0999999999999996,7.5,6,4.7999999999999998,4.5,4,3.7000000000000002,3.5,9.5999999999999996,7.7999999999999998,4.5999999999999996,4.5999999999999996],"mode":"lines","type":"scatter","name":"Manhattan","marker":{"color":"rgba(0,0,0,1)","line":{"color":"rgba(0,0,0,1)"}},"textfont":{"color":"rgba(0,0,0,1)"},"error_y":{"color":"rgba(0,0,0,1)"},"error_x":{"color":"rgba(0,0,0,1)"},"line":{"color":"rgba(0,0,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023],"y":[8.0999999999999996,8.3500000000000014,7.7000000000000002,6.2000000000000002,4.9000000000000004,4.5,3.8999999999999999,3.6000000000000001,3.5,12.5,9.9000000000000004,5.2999999999999998,4.5999999999999996],"mode":"lines","type":"scatter","name":"Queens","marker":{"color":"rgba(255,255,0,1)","line":{"color":"rgba(255,255,0,1)"}},"textfont":{"color":"rgba(255,255,0,1)"},"error_y":{"color":"rgba(255,255,0,1)"},"error_x":{"color":"rgba(255,255,0,1)"},"line":{"color":"rgba(255,255,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023],"y":[9.1999999999999993,9.5500000000000007,8.9499999999999993,7.2999999999999998,5.7000000000000002,5.2000000000000002,4.5999999999999996,4.0999999999999996,3.8999999999999999,10.6,9,5.5999999999999996,4.9000000000000004],"mode":"lines","type":"scatter","name":"Staten Island","marker":{"color":"rgba(227,26,28,1)","line":{"color":"rgba(227,26,28,1)"}},"textfont":{"color":"rgba(227,26,28,1)"},"error_y":{"color":"rgba(227,26,28,1)"},"error_x":{"color":"rgba(227,26,28,1)"},"line":{"color":"rgba(227,26,28,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div>
+<figure class="figure">
+<p><img src="nyc_zip_unrate.gif" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>####avg metrics by zip/borough</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>temp_df1<span class="ot">&lt;-</span>tmap_zip_unrate_inc_for_sf<span class="sc">|&gt;</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year<span class="sc">&gt;=</span><span class="dv">2011</span> <span class="sc">&amp;</span> year<span class="sc">&lt;=</span><span class="dv">2022</span>) <span class="sc">|&gt;</span></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Borough,Neighborhood) <span class="sc">|&gt;</span></span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">avg_unrate_zip=</span><span class="fu">mean</span>(unrate))<span class="sc">|&gt;</span></span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>temp_df2<span class="ot">&lt;-</span>tmap_zip_unrate_inc_for_sf<span class="sc">|&gt;</span></span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year<span class="sc">&gt;=</span><span class="dv">2011</span> <span class="sc">&amp;</span> year<span class="sc">&lt;=</span><span class="dv">2022</span>) <span class="sc">|&gt;</span></span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Borough) <span class="sc">|&gt;</span></span>
+<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">avg_unrate=</span><span class="fu">mean</span>(unrate))<span class="sc">|&gt;</span></span>
+<span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb66-12"><a href="#cb66-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-13"><a href="#cb66-13" aria-hidden="true" tabindex="-1"></a>temp_df3<span class="ot">&lt;-</span><span class="fu">left_join</span>(temp_df1,temp_df2,<span class="at">by=</span><span class="fu">c</span>(<span class="st">"Borough"</span><span class="ot">=</span><span class="st">"Borough"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(temp_df3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  Borough Neighborhood               avg_unrate_zip avg_unrate
+  &lt;chr&gt;   &lt;chr&gt;                               &lt;dbl&gt;      &lt;dbl&gt;
+1 Bronx   Bronx Park and Fordham             0.138       0.119
+2 Bronx   Central Bronx                      0.157       0.119
+3 Bronx   High Bridge and Morrisania         0.136       0.119
+4 Bronx   Hunts Point and Mott Haven         0.135       0.119
+5 Bronx   Kingsbridge and Riverdale          0.0812      0.119
+6 Bronx   Northeast Bronx                    0.103       0.119</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>temp_df3 <span class="ot">&lt;-</span>temp_df3 <span class="sc">|&gt;</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">delta=</span><span class="fu">round</span>(<span class="dv">100</span><span class="sc">*</span>(avg_unrate_zip<span class="sc">-</span>avg_unrate),<span class="dv">2</span>)</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>         )</span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>temp_df4<span class="ot">&lt;-</span><span class="fu">sqldf</span>(</span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"</span></span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a><span class="st">  with a as (</span></span>
+<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a><span class="st">  select t.*,</span></span>
+<span id="cb69-9"><a href="#cb69-9" aria-hidden="true" tabindex="-1"></a><span class="st">  row_number() over(partition by Borough order by delta asc ) as rn_min,</span></span>
+<span id="cb69-10"><a href="#cb69-10" aria-hidden="true" tabindex="-1"></a><span class="st">  row_number() over(partition by Borough order by delta desc ) as rn_max</span></span>
+<span id="cb69-11"><a href="#cb69-11" aria-hidden="true" tabindex="-1"></a><span class="st">  from temp_df3 t</span></span>
+<span id="cb69-12"><a href="#cb69-12" aria-hidden="true" tabindex="-1"></a><span class="st">  )</span></span>
+<span id="cb69-13"><a href="#cb69-13" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb69-14"><a href="#cb69-14" aria-hidden="true" tabindex="-1"></a><span class="st">  select Borough,</span></span>
+<span id="cb69-15"><a href="#cb69-15" aria-hidden="true" tabindex="-1"></a><span class="st">  Neighborhood,</span></span>
+<span id="cb69-16"><a href="#cb69-16" aria-hidden="true" tabindex="-1"></a><span class="st">  avg_unrate,</span></span>
+<span id="cb69-17"><a href="#cb69-17" aria-hidden="true" tabindex="-1"></a><span class="st">  avg_unrate_zip,</span></span>
+<span id="cb69-18"><a href="#cb69-18" aria-hidden="true" tabindex="-1"></a><span class="st">  delta</span></span>
+<span id="cb69-19"><a href="#cb69-19" aria-hidden="true" tabindex="-1"></a><span class="st">  from a</span></span>
+<span id="cb69-20"><a href="#cb69-20" aria-hidden="true" tabindex="-1"></a><span class="st">  where 1=1</span></span>
+<span id="cb69-21"><a href="#cb69-21" aria-hidden="true" tabindex="-1"></a><span class="st">  and (rn_min=1 or rn_max=1)</span></span>
+<span id="cb69-22"><a href="#cb69-22" aria-hidden="true" tabindex="-1"></a><span class="st">  </span></span>
+<span id="cb69-23"><a href="#cb69-23" aria-hidden="true" tabindex="-1"></a><span class="st">  ;</span></span>
+<span id="cb69-24"><a href="#cb69-24" aria-hidden="true" tabindex="-1"></a><span class="st">  "</span></span>
+<span id="cb69-25"><a href="#cb69-25" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb69-26"><a href="#cb69-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-27"><a href="#cb69-27" aria-hidden="true" tabindex="-1"></a>temp_df4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         Borough              Neighborhood avg_unrate avg_unrate_zip delta
+1          Bronx Kingsbridge and Riverdale 0.11866667     0.08125000 -3.74
+2          Bronx             Central Bronx 0.11866667     0.15666667  3.80
+3       Brooklyn                Greenpoint 0.08632883     0.05875000 -2.76
+4       Brooklyn Bushwick and Williamsburg 0.08632883     0.10972222  2.34
+5      Manhattan           Upper East Side 0.06803571     0.04180556 -2.62
+6      Manhattan            Central Harlem 0.06803571     0.11566667  4.76
+7         Queens          Northeast Queens 0.07768362     0.05854167 -1.91
+8         Queens                   Jamaica 0.07768362     0.11202381  3.43
+9  Staten Island               South Shore 0.06250000     0.05450000 -0.80
+10 Staten Island             Port Richmond 0.06250000     0.07166667  0.92</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>temp_df4 <span class="sc">|&gt;</span></span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">avg_unrate=</span><span class="fu">round</span>(avg_unrate,<span class="dv">2</span>),</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">avg_unrate_zip=</span><span class="fu">round</span>(avg_unrate_zip,<span class="dv">2</span>)</span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>         ) <span class="sc">|&gt;</span></span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(</span>
+<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Average Unemployment Rates by Borough and Neighborhood"</span>,</span>
+<span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle=</span><span class="st">"2011-2022"</span></span>
+<span id="cb71-9"><a href="#cb71-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb71-10"><a href="#cb71-10" aria-hidden="true" tabindex="-1"></a><span class="fu">tab_options</span>(</span>
+<span id="cb71-11"><a href="#cb71-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">table.font.size =</span> <span class="dv">8</span>,</span>
+<span id="cb71-12"><a href="#cb71-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">heading.align =</span> <span class="st">"center"</span></span>
+<span id="cb71-13"><a href="#cb71-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb71-14"><a href="#cb71-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
+<span id="cb71-15"><a href="#cb71-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_unrate =</span> <span class="st">"Borough Rate"</span>,</span>
+<span id="cb71-16"><a href="#cb71-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">avg_unrate_zip=</span> <span class="st">"Neighborhood Rate"</span>,</span>
+<span id="cb71-17"><a href="#cb71-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">delta =</span> <span class="st">"Delta (pp)"</span></span>
+<span id="cb71-18"><a href="#cb71-18" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb71-19"><a href="#cb71-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_align</span>(</span>
+<span id="cb71-20"><a href="#cb71-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">align =</span> <span class="st">"left"</span>,</span>
+<span id="cb71-21"><a href="#cb71-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">everything</span>()</span>
+<span id="cb71-22"><a href="#cb71-22" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="btwjblutzs" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#btwjblutzs table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#btwjblutzs thead, #btwjblutzs tbody, #btwjblutzs tfoot, #btwjblutzs tr, #btwjblutzs td, #btwjblutzs th {
+  border-style: none;
+}
+
+#btwjblutzs p {
+  margin: 0;
+  padding: 0;
+}
+
+#btwjblutzs .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 8px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#btwjblutzs .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#btwjblutzs .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#btwjblutzs .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#btwjblutzs .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#btwjblutzs .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#btwjblutzs .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#btwjblutzs .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#btwjblutzs .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#btwjblutzs .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#btwjblutzs .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#btwjblutzs .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#btwjblutzs .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#btwjblutzs .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#btwjblutzs .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#btwjblutzs .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#btwjblutzs .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#btwjblutzs .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#btwjblutzs .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#btwjblutzs .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#btwjblutzs .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#btwjblutzs .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#btwjblutzs .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#btwjblutzs .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#btwjblutzs .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#btwjblutzs .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#btwjblutzs .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#btwjblutzs .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#btwjblutzs .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#btwjblutzs .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#btwjblutzs .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#btwjblutzs .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#btwjblutzs .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#btwjblutzs .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#btwjblutzs .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#btwjblutzs .gt_left {
+  text-align: left;
+}
+
+#btwjblutzs .gt_center {
+  text-align: center;
+}
+
+#btwjblutzs .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#btwjblutzs .gt_font_normal {
+  font-weight: normal;
+}
+
+#btwjblutzs .gt_font_bold {
+  font-weight: bold;
+}
+
+#btwjblutzs .gt_font_italic {
+  font-style: italic;
+}
+
+#btwjblutzs .gt_super {
+  font-size: 65%;
+}
+
+#btwjblutzs .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#btwjblutzs .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#btwjblutzs .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#btwjblutzs .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#btwjblutzs .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#btwjblutzs .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#btwjblutzs .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#btwjblutzs .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#btwjblutzs div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="header gt_heading">
+<th colspan="5" class="gt_heading gt_title gt_font_normal">Average Unemployment Rates by Borough and Neighborhood</th>
+</tr>
+<tr class="odd gt_heading">
+<th colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">2011-2022</th>
+</tr>
+<tr class="header gt_col_headings">
+<th id="Borough" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Borough</th>
+<th id="Neighborhood" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Neighborhood</th>
+<th id="avg_unrate" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Borough Rate</th>
+<th id="avg_unrate_zip" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Neighborhood Rate</th>
+<th id="delta" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Delta (pp)</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="Borough">Bronx</td>
+<td class="gt_row gt_left" headers="Neighborhood">Kingsbridge and Riverdale</td>
+<td class="gt_row gt_left" headers="avg_unrate">0.12</td>
+<td class="gt_row gt_left" headers="avg_unrate_zip">0.08</td>
+<td class="gt_row gt_left" headers="delta">-3.74</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Borough">Bronx</td>
+<td class="gt_row gt_left" headers="Neighborhood">Central Bronx</td>
+<td class="gt_row gt_left" headers="avg_unrate">0.12</td>
+<td class="gt_row gt_left" headers="avg_unrate_zip">0.16</td>
+<td class="gt_row gt_left" headers="delta">3.80</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Borough">Brooklyn</td>
+<td class="gt_row gt_left" headers="Neighborhood">Greenpoint</td>
+<td class="gt_row gt_left" headers="avg_unrate">0.09</td>
+<td class="gt_row gt_left" headers="avg_unrate_zip">0.06</td>
+<td class="gt_row gt_left" headers="delta">-2.76</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Borough">Brooklyn</td>
+<td class="gt_row gt_left" headers="Neighborhood">Bushwick and Williamsburg</td>
+<td class="gt_row gt_left" headers="avg_unrate">0.09</td>
+<td class="gt_row gt_left" headers="avg_unrate_zip">0.11</td>
+<td class="gt_row gt_left" headers="delta">2.34</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Borough">Manhattan</td>
+<td class="gt_row gt_left" headers="Neighborhood">Upper East Side</td>
+<td class="gt_row gt_left" headers="avg_unrate">0.07</td>
+<td class="gt_row gt_left" headers="avg_unrate_zip">0.04</td>
+<td class="gt_row gt_left" headers="delta">-2.62</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Borough">Manhattan</td>
+<td class="gt_row gt_left" headers="Neighborhood">Central Harlem</td>
+<td class="gt_row gt_left" headers="avg_unrate">0.07</td>
+<td class="gt_row gt_left" headers="avg_unrate_zip">0.12</td>
+<td class="gt_row gt_left" headers="delta">4.76</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Borough">Queens</td>
+<td class="gt_row gt_left" headers="Neighborhood">Northeast Queens</td>
+<td class="gt_row gt_left" headers="avg_unrate">0.08</td>
+<td class="gt_row gt_left" headers="avg_unrate_zip">0.06</td>
+<td class="gt_row gt_left" headers="delta">-1.91</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Borough">Queens</td>
+<td class="gt_row gt_left" headers="Neighborhood">Jamaica</td>
+<td class="gt_row gt_left" headers="avg_unrate">0.08</td>
+<td class="gt_row gt_left" headers="avg_unrate_zip">0.11</td>
+<td class="gt_row gt_left" headers="delta">3.43</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Borough">Staten Island</td>
+<td class="gt_row gt_left" headers="Neighborhood">South Shore</td>
+<td class="gt_row gt_left" headers="avg_unrate">0.06</td>
+<td class="gt_row gt_left" headers="avg_unrate_zip">0.05</td>
+<td class="gt_row gt_left" headers="delta">-0.80</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Borough">Staten Island</td>
+<td class="gt_row gt_left" headers="Neighborhood">Port Richmond</td>
+<td class="gt_row gt_left" headers="avg_unrate">0.06</td>
+<td class="gt_row gt_left" headers="avg_unrate_zip">0.07</td>
+<td class="gt_row gt_left" headers="delta">0.92</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>palette_5counties<span class="ot">&lt;-</span><span class="fu">c</span>(</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"dodgerblue2"</span>,<span class="st">"green4"</span>,<span class="st">"black"</span>,<span class="st">"yellow"</span>,<span class="st">"#E31A1C"</span></span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a><span class="co"># create a chart</span></span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a>nyc_unrate_annual2011<span class="ot">&lt;-</span>nyc_county_unrate_annual<span class="sc">|&gt;</span></span>
+<span id="cb72-8"><a href="#cb72-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year<span class="sc">&gt;=</span><span class="dv">2011</span><span class="sc">&amp;</span>year<span class="sc">&lt;=</span><span class="dv">2022</span>)<span class="sc">|&gt;</span></span>
+<span id="cb72-9"><a href="#cb72-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>()</span>
+<span id="cb72-10"><a href="#cb72-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-11"><a href="#cb72-11" aria-hidden="true" tabindex="-1"></a>nyc_annual_unrate_year_plot <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(nyc_unrate_annual2011,</span>
+<span id="cb72-12"><a href="#cb72-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="sc">~</span>year, <span class="at">y =</span> <span class="sc">~</span>unrate,</span>
+<span id="cb72-13"><a href="#cb72-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="sc">~</span>county_name,</span>
+<span id="cb72-14"><a href="#cb72-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"scatter"</span>,</span>
+<span id="cb72-15"><a href="#cb72-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">mode =</span> <span class="st">"lines"</span>,</span>
+<span id="cb72-16"><a href="#cb72-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">colors =</span> palette_5counties</span>
+<span id="cb72-17"><a href="#cb72-17" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb72-18"><a href="#cb72-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(</span>
+<span id="cb72-19"><a href="#cb72-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Unemployment Rate by NYC Borough"</span>,</span>
+<span id="cb72-20"><a href="#cb72-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">xaxis =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="st">"Year"</span>),</span>
+<span id="cb72-21"><a href="#cb72-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">yaxis =</span> <span class="fu">list</span>(</span>
+<span id="cb72-22"><a href="#cb72-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">"Unemployment Rate"</span></span>
+<span id="cb72-23"><a href="#cb72-23" aria-hidden="true" tabindex="-1"></a>      <span class="co">#,</span></span>
+<span id="cb72-24"><a href="#cb72-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">#    tickformat = ".0%",</span></span>
+<span id="cb72-25"><a href="#cb72-25" aria-hidden="true" tabindex="-1"></a>  <span class="co">#    range = c(0, 1)</span></span>
+<span id="cb72-26"><a href="#cb72-26" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb72-27"><a href="#cb72-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend =</span> <span class="fu">list</span>(</span>
+<span id="cb72-28"><a href="#cb72-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">orientation =</span> <span class="st">"h"</span>, <span class="co"># Horizontal legend</span></span>
+<span id="cb72-29"><a href="#cb72-29" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="fl">0.5</span>, <span class="co"># Center horizontally</span></span>
+<span id="cb72-30"><a href="#cb72-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">xanchor =</span> <span class="st">"center"</span>, <span class="co"># Align center</span></span>
+<span id="cb72-31"><a href="#cb72-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="sc">-</span><span class="fl">0.2</span>, <span class="co"># Position below the plot</span></span>
+<span id="cb72-32"><a href="#cb72-32" aria-hidden="true" tabindex="-1"></a>      <span class="at">font =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">8</span>) <span class="co"># Smaller font size</span></span>
+<span id="cb72-33"><a href="#cb72-33" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb72-34"><a href="#cb72-34" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb72-35"><a href="#cb72-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-36"><a href="#cb72-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the plot</span></span>
+<span id="cb72-37"><a href="#cb72-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-38"><a href="#cb72-38" aria-hidden="true" tabindex="-1"></a>nyc_annual_unrate_year_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-0091685fdbc8d1d4e1c2" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-0091685fdbc8d1d4e1c2">{"x":{"visdat":{"573076006494":["function () ","plotlyVisDat"]},"cur_data":"573076006494","attrs":{"573076006494":{"x":{},"y":{},"mode":"lines","color":{},"colors":["dodgerblue2","green4","black","yellow","#E31A1C"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Unemployment Rate by NYC Borough","xaxis":{"domain":[0,1],"automargin":true,"title":"Year"},"yaxis":{"domain":[0,1],"automargin":true,"title":"Unemployment Rate"},"legend":{"orientation":"h","x":0.5,"xanchor":"center","y":-0.20000000000000001,"font":{"size":8}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022],"y":[12,12.5,11.699999999999999,9.5,7.5999999999999996,7.0999999999999996,6.2000000000000002,5.7000000000000002,5.4000000000000004,16.050000000000001,13.850000000000001,7.9000000000000004],"mode":"lines","type":"scatter","name":"Bronx","marker":{"color":"rgba(28,134,238,1)","line":{"color":"rgba(28,134,238,1)"}},"textfont":{"color":"rgba(28,134,238,1)"},"error_y":{"color":"rgba(28,134,238,1)"},"error_x":{"color":"rgba(28,134,238,1)"},"line":{"color":"rgba(28,134,238,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022],"y":[9.5999999999999996,9.9000000000000004,9.3000000000000007,7.4500000000000002,5.7999999999999998,5.2999999999999998,4.5999999999999996,4.2000000000000002,4.0999999999999996,12.550000000000001,10.4,5.9000000000000004],"mode":"lines","type":"scatter","name":"Brooklyn","marker":{"color":"rgba(0,139,0,1)","line":{"color":"rgba(0,139,0,1)"}},"textfont":{"color":"rgba(0,139,0,1)"},"error_y":{"color":"rgba(0,139,0,1)"},"error_x":{"color":"rgba(0,139,0,1)"},"line":{"color":"rgba(0,139,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022],"y":[7.9000000000000004,8.0999999999999996,7.5,6,4.7999999999999998,4.5,4,3.7000000000000002,3.5,9.5999999999999996,7.7999999999999998,4.5999999999999996],"mode":"lines","type":"scatter","name":"Manhattan","marker":{"color":"rgba(0,0,0,1)","line":{"color":"rgba(0,0,0,1)"}},"textfont":{"color":"rgba(0,0,0,1)"},"error_y":{"color":"rgba(0,0,0,1)"},"error_x":{"color":"rgba(0,0,0,1)"},"line":{"color":"rgba(0,0,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022],"y":[8.0999999999999996,8.3500000000000014,7.7000000000000002,6.2000000000000002,4.9000000000000004,4.5,3.8999999999999999,3.6000000000000001,3.5,12.5,9.9000000000000004,5.2999999999999998],"mode":"lines","type":"scatter","name":"Queens","marker":{"color":"rgba(255,255,0,1)","line":{"color":"rgba(255,255,0,1)"}},"textfont":{"color":"rgba(255,255,0,1)"},"error_y":{"color":"rgba(255,255,0,1)"},"error_x":{"color":"rgba(255,255,0,1)"},"line":{"color":"rgba(255,255,0,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022],"y":[9.1999999999999993,9.5500000000000007,8.9499999999999993,7.2999999999999998,5.7000000000000002,5.2000000000000002,4.5999999999999996,4.0999999999999996,3.8999999999999999,10.6,9,5.5999999999999996],"mode":"lines","type":"scatter","name":"Staten Island","marker":{"color":"rgba(227,26,28,1)","line":{"color":"rgba(227,26,28,1)"}},"textfont":{"color":"rgba(227,26,28,1)"},"error_y":{"color":"rgba(227,26,28,1)"},"error_x":{"color":"rgba(227,26,28,1)"},"line":{"color":"rgba(227,26,28,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <section id="dnu-test-for-other-metrics" class="level29">
 <p class="heading">DNU test for other metrics</p>
 <p>###1 year</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test data for 1 year    </span></span>
-<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>unemployment_data <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(</span>
-<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">geography =</span> <span class="st">"zcta"</span>,  <span class="co"># ZIP Code Tabulation Areas</span></span>
-<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">variables =</span> <span class="fu">c</span>(</span>
-<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a><span class="co">#      male="S0501_C01_002E",</span></span>
-<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a><span class="co">#female="S0501_C01_003E"</span></span>
-<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a><span class="at">median_income=</span><span class="st">"B19013_001E"</span></span>
-<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a>       ),</span>
-<span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">year =</span> <span class="dv">2011</span>,  <span class="co"># Specify the ACS year</span></span>
-<span id="cb65-12"><a href="#cb65-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">survey =</span> <span class="st">"acs5"</span>  <span class="co"># 5-year estimates</span></span>
-<span id="cb65-13"><a href="#cb65-13" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test data for 1 year    </span></span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>unemployment_data <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(</span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">geography =</span> <span class="st">"zcta"</span>,  <span class="co"># ZIP Code Tabulation Areas</span></span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">variables =</span> <span class="fu">c</span>(</span>
+<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a><span class="co">#      male="S0501_C01_002E",</span></span>
+<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a><span class="co">#female="S0501_C01_003E"</span></span>
+<span id="cb73-8"><a href="#cb73-8" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb73-9"><a href="#cb73-9" aria-hidden="true" tabindex="-1"></a><span class="at">median_income=</span><span class="st">"B19013_001E"</span></span>
+<span id="cb73-10"><a href="#cb73-10" aria-hidden="true" tabindex="-1"></a>       ),</span>
+<span id="cb73-11"><a href="#cb73-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">year =</span> <span class="dv">2011</span>,  <span class="co"># Specify the ACS year</span></span>
+<span id="cb73-12"><a href="#cb73-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">survey =</span> <span class="st">"acs5"</span>  <span class="co"># 5-year estimates</span></span>
+<span id="cb73-13"><a href="#cb73-13" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Getting data from the 2007-2011 5-year ACS</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="do">## loop for all years - available until 2022</span></span>
-<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>years <span class="ot">&lt;-</span> <span class="fu">lst</span>(<span class="dv">2011</span>,<span class="dv">2012</span>,<span class="dv">2013</span>,<span class="dv">2014</span>,<span class="dv">2015</span>,<span class="dv">2016</span>,<span class="dv">2017</span>,<span class="dv">2018</span>,<span class="dv">2019</span>,<span class="dv">2020</span>,<span class="dv">2021</span>,<span class="dv">2022</span>)</span>
-<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a><span class="co">#list of NYC zipcodes</span></span>
-<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>zctas <span class="ot">&lt;-</span> <span class="fu">as.list</span>(<span class="fu">as.character</span>(nyc_zip_codes<span class="sc">$</span>ZipCode)) </span>
-<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize an empty list to store results</span></span>
-<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>results  <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through each year</span></span>
-<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (year <span class="cf">in</span> years) {</span>
-<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"Fetching data for year: "</span>, year)  <span class="co"># Print progress</span></span>
-<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb67-14"><a href="#cb67-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
-<span id="cb67-15"><a href="#cb67-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Fetch ACS data for the current year</span></span>
-<span id="cb67-16"><a href="#cb67-16" aria-hidden="true" tabindex="-1"></a>    data <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(</span>
-<span id="cb67-17"><a href="#cb67-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">geography =</span> <span class="st">"zcta"</span>,  <span class="co"># ZIP Code Tabulation Areas</span></span>
-<span id="cb67-18"><a href="#cb67-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">variables =</span> <span class="fu">c</span>(</span>
-<span id="cb67-19"><a href="#cb67-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">v1=</span><span class="st">"S0501_C01_002E"</span>, <span class="co">#</span></span>
-<span id="cb67-20"><a href="#cb67-20" aria-hidden="true" tabindex="-1"></a><span class="at">v2=</span><span class="st">"S0501_C01_003E"</span></span>
-<span id="cb67-21"><a href="#cb67-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb67-22"><a href="#cb67-22" aria-hidden="true" tabindex="-1"></a>      ),</span>
-<span id="cb67-23"><a href="#cb67-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">year =</span> year,</span>
-<span id="cb67-24"><a href="#cb67-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">survey =</span> <span class="st">"acs5"</span>  <span class="co"># 5-year estimates</span></span>
-<span id="cb67-25"><a href="#cb67-25" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb67-26"><a href="#cb67-26" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb67-27"><a href="#cb67-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Store the data in the results list</span></span>
-<span id="cb67-28"><a href="#cb67-28" aria-hidden="true" tabindex="-1"></a>    results[[<span class="fu">as.character</span>(year)]] <span class="ot">&lt;-</span> data</span>
-<span id="cb67-29"><a href="#cb67-29" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
-<span id="cb67-30"><a href="#cb67-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"Error fetching data for year: "</span>, year, <span class="st">": "</span>, e<span class="sc">$</span>message)</span>
-<span id="cb67-31"><a href="#cb67-31" aria-hidden="true" tabindex="-1"></a>  })</span>
-<span id="cb67-32"><a href="#cb67-32" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="do">## loop for all years - available until 2022</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>years <span class="ot">&lt;-</span> <span class="fu">lst</span>(<span class="dv">2011</span>,<span class="dv">2012</span>,<span class="dv">2013</span>,<span class="dv">2014</span>,<span class="dv">2015</span>,<span class="dv">2016</span>,<span class="dv">2017</span>,<span class="dv">2018</span>,<span class="dv">2019</span>,<span class="dv">2020</span>,<span class="dv">2021</span>,<span class="dv">2022</span>)</span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a><span class="co">#list of NYC zipcodes</span></span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a>zctas <span class="ot">&lt;-</span> <span class="fu">as.list</span>(<span class="fu">as.character</span>(nyc_zip_codes<span class="sc">$</span>ZipCode)) </span>
+<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize an empty list to store results</span></span>
+<span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a>results  <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb75-9"><a href="#cb75-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-10"><a href="#cb75-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through each year</span></span>
+<span id="cb75-11"><a href="#cb75-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (year <span class="cf">in</span> years) {</span>
+<span id="cb75-12"><a href="#cb75-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"Fetching data for year: "</span>, year)  <span class="co"># Print progress</span></span>
+<span id="cb75-13"><a href="#cb75-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb75-14"><a href="#cb75-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>({</span>
+<span id="cb75-15"><a href="#cb75-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Fetch ACS data for the current year</span></span>
+<span id="cb75-16"><a href="#cb75-16" aria-hidden="true" tabindex="-1"></a>    data <span class="ot">&lt;-</span> <span class="fu">get_acs</span>(</span>
+<span id="cb75-17"><a href="#cb75-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">geography =</span> <span class="st">"zcta"</span>,  <span class="co"># ZIP Code Tabulation Areas</span></span>
+<span id="cb75-18"><a href="#cb75-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">variables =</span> <span class="fu">c</span>(</span>
+<span id="cb75-19"><a href="#cb75-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">v1=</span><span class="st">"S0501_C01_002E"</span>, <span class="co">#</span></span>
+<span id="cb75-20"><a href="#cb75-20" aria-hidden="true" tabindex="-1"></a><span class="at">v2=</span><span class="st">"S0501_C01_003E"</span></span>
+<span id="cb75-21"><a href="#cb75-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-22"><a href="#cb75-22" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb75-23"><a href="#cb75-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">year =</span> year,</span>
+<span id="cb75-24"><a href="#cb75-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">survey =</span> <span class="st">"acs5"</span>  <span class="co"># 5-year estimates</span></span>
+<span id="cb75-25"><a href="#cb75-25" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb75-26"><a href="#cb75-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb75-27"><a href="#cb75-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Store the data in the results list</span></span>
+<span id="cb75-28"><a href="#cb75-28" aria-hidden="true" tabindex="-1"></a>    results[[<span class="fu">as.character</span>(year)]] <span class="ot">&lt;-</span> data</span>
+<span id="cb75-29"><a href="#cb75-29" aria-hidden="true" tabindex="-1"></a>  }, <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb75-30"><a href="#cb75-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">message</span>(<span class="st">"Error fetching data for year: "</span>, year, <span class="st">": "</span>, e<span class="sc">$</span>message)</span>
+<span id="cb75-31"><a href="#cb75-31" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb75-32"><a href="#cb75-32" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Fetching data for year: 2011</code></pre>
 </div>
@@ -982,17 +1672,17 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_median_inc
 <div class="cell-output cell-output-stderr">
 <pre><code>Using the ACS Subject Tables</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine all results into a single dataframe</span></span>
-<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>combined_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(results, <span class="at">.id =</span> <span class="st">"year"</span>)</span>
-<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb104-4"><a href="#cb104-4" aria-hidden="true" tabindex="-1"></a>combined_data<span class="sc">$</span>zcta<span class="ot">&lt;-</span><span class="fu">gsub</span>(<span class="st">"ZCTA5 "</span>,<span class="st">""</span>,combined_data<span class="sc">$</span>NAME)</span>
-<span id="cb104-5"><a href="#cb104-5" aria-hidden="true" tabindex="-1"></a><span class="co">#head(combined_data)</span></span>
-<span id="cb104-6"><a href="#cb104-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb104-7"><a href="#cb104-7" aria-hidden="true" tabindex="-1"></a>nyc_zip_codes<span class="ot">&lt;-</span>nyc_zip_codes <span class="sc">|&gt;</span></span>
-<span id="cb104-8"><a href="#cb104-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">zcta=</span><span class="fu">as.character</span>(ZipCode))</span>
-<span id="cb104-9"><a href="#cb104-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb104-10"><a href="#cb104-10" aria-hidden="true" tabindex="-1"></a>combined_data_nyc<span class="ot">&lt;-</span><span class="fu">inner_join</span>(combined_data,nyc_zip_codes, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"zcta"</span><span class="ot">=</span><span class="st">"zcta"</span>))</span>
-<span id="cb104-11"><a href="#cb104-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(combined_data_nyc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine all results into a single dataframe</span></span>
+<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a>combined_data <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(results, <span class="at">.id =</span> <span class="st">"year"</span>)</span>
+<span id="cb112-3"><a href="#cb112-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-4"><a href="#cb112-4" aria-hidden="true" tabindex="-1"></a>combined_data<span class="sc">$</span>zcta<span class="ot">&lt;-</span><span class="fu">gsub</span>(<span class="st">"ZCTA5 "</span>,<span class="st">""</span>,combined_data<span class="sc">$</span>NAME)</span>
+<span id="cb112-5"><a href="#cb112-5" aria-hidden="true" tabindex="-1"></a><span class="co">#head(combined_data)</span></span>
+<span id="cb112-6"><a href="#cb112-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-7"><a href="#cb112-7" aria-hidden="true" tabindex="-1"></a>nyc_zip_codes<span class="ot">&lt;-</span>nyc_zip_codes <span class="sc">|&gt;</span></span>
+<span id="cb112-8"><a href="#cb112-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">zcta=</span><span class="fu">as.character</span>(ZipCode))</span>
+<span id="cb112-9"><a href="#cb112-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-10"><a href="#cb112-10" aria-hidden="true" tabindex="-1"></a>combined_data_nyc<span class="ot">&lt;-</span><span class="fu">inner_join</span>(combined_data,nyc_zip_codes, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"zcta"</span><span class="ot">=</span><span class="st">"zcta"</span>))</span>
+<span id="cb112-11"><a href="#cb112-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(combined_data_nyc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 10
   year  GEOID   NAME  variable estimate   moe zcta  Borough Neighborhood ZipCode
@@ -1006,8 +1696,8 @@ Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\nyc_zip_median_inc
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>acs_vars <span class="ot">&lt;-</span> <span class="fu">load_variables</span>(<span class="dv">2022</span>, <span class="st">"acs5"</span>, <span class="at">cache =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(acs_vars)  <span class="co"># Browse the available variables</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a>acs_vars <span class="ot">&lt;-</span> <span class="fu">load_variables</span>(<span class="dv">2022</span>, <span class="st">"acs5"</span>, <span class="at">cache =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a><span class="fu">view</span>(acs_vars)  <span class="co"># Browse the available variables</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
