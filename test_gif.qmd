@@ -1,0 +1,267 @@
+
+---
+title: "Unemployment in New York"
+---
+
+
+#### Data Prep  
+In this section, we obtain and prepare data for analysis.   
+__Installing and Loading Libraries__
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+# Installing and loading libraries
+
+if (!require("tidyverse")) install.packages("tidyverse")
+library(tidyverse)
+if (!require("DT")) install.packages("DT")
+library(DT)
+if (!require("dplyr")) install.packages("dplyr")
+library(dplyr)
+if (!require("psych")) install.packages("psych")
+library(psych)
+if (!require("gt")) install.packages("gt")
+library(gt)
+if (!require("formattable")) install.packages("formattable")
+library(formattable)
+if (!require("sqldf")) install.packages("sqldf")
+library(sqldf)
+if (!require("plotly")) install.packages("plotly")
+library(plotly)
+if (!require("ggplot2")) install.packages("ggplot2")
+library(ggplot2)
+if (!require("RColorBrewer")) install.packages("RColorBrewer")
+library(RColorBrewer)
+if (!require("fredr")) install.packages("fredr")
+library(fredr)
+if (!require("tidycensus")) install.packages("tidycensus")
+library(tidycensus)
+if (!require("httr2")) install.packages("httr2")
+library(httr2)
+if (!require("readr")) install.packages("readr")
+library(readr)
+if (!require("sf")) install.packages("sf")
+library(sf)
+if (!require("fredr")) install.packages("fredr")
+library(fredr)
+if (!require("tmap")) install.packages("tmap")
+library(tmap)
+if (!require("knitr")) install.packages("knitr")
+library(knitr)
+
+```
+__Reading in API Key__
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+# Load the FRED API key from a local file
+fred_api_key <- readLines("fred.txt")
+fredr_set_key(fred_api_key)
+
+```
+
+###### Getting Shape Files  
+__County__
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+
+## counties
+
+if(!file.exists("nyc_borough_boundaries.zip")){
+    download.file("https://data.cityofnewyork.us/api/geospatial/tqmj-j8zm?method=export&format=Shapefile", 
+              destfile="nyc_borough_boundaries.zip",
+              method="curl")
+}
+
+##-
+td <- tempdir(); 
+zip_contents <- unzip("nyc_borough_boundaries.zip", 
+                      exdir = td)
+    
+fname_shp <- zip_contents[grepl("shp$", zip_contents)]
+nyc_county_sf <- read_sf(fname_shp)
+head(nyc_county_sf)
+
+
+```
+
+__zip codes __
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+
+### 
+
+if(!file.exists("zipcodes_maps.zip")){
+    download.file("https://www2.census.gov/geo/tiger/GENZ2018/shp/cb_2018_us_zcta510_500k.zip", 
+              destfile="zipcodes_maps.zip",
+              method="curl")
+}
+
+##-
+td <- tempdir(); 
+zip_contents <- unzip("zipcodes_maps.zip", 
+                      exdir = td)
+    
+fname_shp <- zip_contents[grepl("shp$", zip_contents)]
+nyc_zip_codes_sf <- read_sf(fname_shp)
+head(nyc_zip_codes_sf)
+
+```
+
+
+__nyc zip codes mapping doc__
+
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+
+# here's a list of NYC zipcodes 
+url <- "https://raw.githubusercontent.com/erikgregorywebb/nyc-housing/master/Data/nyc-zip-codes.csv"
+
+response <- request(url) %>%
+  req_perform()
+
+file_path <- "nyc-zip-codes.csv"
+
+writeBin(response$body, file_path)
+nyc_zip_codes_list <- read_csv(file_path)
+
+head(nyc_zip_codes_list)
+```
+
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+
+nyc_zip_codes_list<-nyc_zip_codes_list|>
+  mutate(zcta=as.character(ZipCode))
+
+
+nyc_zip_codes_sf2<-inner_join(nyc_zip_codes_sf,
+                              nyc_zip_codes_list,by=c("GEOID10"="zcta")
+                              ) |>
+  select(GEOID10,Borough,Neighborhood,geometry)
+
+head(nyc_zip_codes_sf2)
+
+```
+
+#### FRED API DATA
+
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+
+# Search for unemployment rate data series for NY counties
+search_results <- fredr_series_search_text("unemployment rate county") 
+
+# Filter for NY counties
+ny_counties <- search_results %>%
+  filter(grepl(", NY$", title, ignore.case = TRUE))  # Match titles ending with ", NY"
+
+# Display the list of NY counties and their series IDs
+ny_counties_list <- ny_counties %>%
+  select(id, title)
+print(ny_counties_list)
+
+# Fetch data for all NY counties
+ny_unemployment_data <- lapply(ny_counties$id, function(series_id) {
+  data <- fredr(
+    series_id = series_id,
+    observation_start = as.Date("2000-01-01"),  # Start date
+    observation_end = as.Date("2023-12-31") ,    # End date
+  frequency         = "a",           # "a" for annual
+    aggregation_method = "avg"   
+    )
+  data$county <- ny_counties$title[ny_counties$id == series_id]  # Add county name
+  return(data)
+}) %>%
+  bind_rows()  # Combine all data into a single data frame
+
+#### filter to NYC counties
+
+list_of_ny_counties<-c("New York","Bronx","Kings","Queens","Richmond")
+unrate<-"Unemployment Rate in "
+ny_var<-" County, NY"
+
+ny_list <- rep(ny_var, 5)
+unrate_list<-rep(unrate,5)
+
+
+ny_combined_list <- mapply(function(x, y,z) paste(x, y,z, sep = ""), unrate_list,
+                           list_of_ny_counties,ny_list,SIMPLIFY = FALSE)
+
+# Filter 
+ny_unrate_county_filtered <- ny_unemployment_data %>% 
+  filter(county %in% ny_combined_list)
+
+ny_unrate_county_filtered<-ny_unrate_county_filtered |>
+  mutate(county2=sub("Unemployment Rate in ", "", county),
+         county3=sub(", NY","",county2)) |>
+  select(date,value,county3)
+
+
+### there are several instances of multiple rates for the same county/year - we'll take avg
+
+ny_unrate_county_filtered2<-ny_unrate_county_filtered |>
+  group_by(county3,date) |>
+  summarise(unrate=mean(value)) |>
+  ungroup()
+
+nyc_county_unrate_annual<-ny_unrate_county_filtered2 |>
+  mutate(year = year(as.Date(date))) |>
+  mutate(county_name = case_when(
+    county3 == "New York County" ~ "Manhattan",
+    county3 == "Bronx County" ~ "Bronx",
+    county3 == "Kings County" ~ "Brooklyn",
+    county3 == "Queens County" ~ "Queens",
+    county3 == "Richmond County" ~ "Staten Island",
+    TRUE ~ "Unknown"
+  )) 
+
+head(nyc_county_unrate_annual)
+
+```
+###### animated plot - county-level  
+
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+###  create a df tmap
+
+tmap_nyc_county_unrate_annual<-left_join(nyc_county_unrate_annual,
+                                         nyc_county_sf,
+                                         by=c("county_name"="boro_name"))
+
+tmap_nyc_county_unrate_annual2<-tmap_nyc_county_unrate_annual|>
+  select(year,unrate,county_name,geometry) 
+
+  tmap_nyc_county_unrate_annual2$label<-paste(tmap_nyc_county_unrate_annual2$county_name,
+                                              tmap_nyc_county_unrate_annual2$unrate,
+                                              sep=": "
+                                              )
+
+```
+
+### NYC unemployemt over the years - animated plot
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+### join maps data for tmap
+
+tmap_mode("plot")
+
+
+map <- tmap_nyc_county_unrate_annual2 |>
+  filter(year>=2011 & year<=2022) |>
+  st_as_sf() |>
+  tm_shape() +
+  tm_polygons("unrate", 
+              title = "Unemployment Rate", 
+              palette = "Greys",  # Adjust palette as desired
+              style = "cont") +   # Continuous scale
+  tm_facets(along = "year", free.coords = FALSE) +
+  tm_text("label", size = 1, col = "red", fontface = "bold")+
+  tm_layout(frame = FALSE)
+
+tmap_animation(map, 
+               filename = "test.gif", 
+               width = 800, 
+               height = 600, 
+               delay = 30) # Adjust delay as desired
+
+```
+
+```{r}
+
+knitr::include_graphics("test.gif")
+
+```
+
