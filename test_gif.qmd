@@ -232,12 +232,15 @@ tmap_nyc_county_unrate_annual2<-tmap_nyc_county_unrate_annual|>
 
 ```
 
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+# set tmap mode 
+tmap_mode("plot")
+```
+
+
 ### NYC unemployemt over the years - animated plot
 ```{r echo=TRUE, warning=FALSE, message=FALSE}
 ### join maps data for tmap
-
-tmap_mode("plot")
-
 
 map <- tmap_nyc_county_unrate_annual2 |>
   filter(year>=2011 & year<=2022) |>
@@ -251,11 +254,13 @@ map <- tmap_nyc_county_unrate_annual2 |>
   tm_text("label", size = 1, col = "red", fontface = "bold")+
   tm_layout(frame = FALSE)
 
-tmap_animation(map, 
+invisible(capture.output({
+  tmap_animation(map, 
                filename = "test.gif", 
                width = 800, 
                height = 600, 
                delay = 30) # Adjust delay as desired
+}))
 
 ```
 

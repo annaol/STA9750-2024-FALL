@@ -443,77 +443,39 @@ Geodetic CRS:  NAD83
 <span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">sep=</span><span class="st">": "</span></span>
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>                                              )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set tmap mode </span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">"plot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 </section>
 <section id="nyc-unemployemt-over-the-years---animated-plot" class="level3">
 <h3 class="anchored" data-anchor-id="nyc-unemployemt-over-the-years---animated-plot">NYC unemployemt over the years - animated plot</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">### join maps data for tmap</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">"plot"</span>)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> tmap_nyc_county_unrate_annual2 <span class="sc">|&gt;</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year<span class="sc">&gt;=</span><span class="dv">2011</span> <span class="sc">&amp;</span> year<span class="sc">&lt;=</span><span class="dv">2022</span>) <span class="sc">|&gt;</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>() <span class="sc">+</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="st">"unrate"</span>, </span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">title =</span> <span class="st">"Unemployment Rate"</span>, </span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">palette =</span> <span class="st">"Greys"</span>,  <span class="co"># Adjust palette as desired</span></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">style =</span> <span class="st">"cont"</span>) <span class="sc">+</span>   <span class="co"># Continuous scale</span></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_facets</span>(<span class="at">along =</span> <span class="st">"year"</span>, <span class="at">free.coords =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_text</span>(<span class="st">"label"</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>)<span class="sc">+</span></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">frame =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_animation</span>(map, </span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">filename =</span> <span class="st">"test.gif"</span>, </span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>               <span class="at">width =</span> <span class="dv">800</span>, </span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>               <span class="at">height =</span> <span class="dv">600</span>, </span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>               <span class="at">delay =</span> <span class="dv">30</span>) <span class="co"># Adjust delay as desired</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Creating frames</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>=============</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>=======</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>=======</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>======</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>=======</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>=======</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>======</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>=======</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>=======</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>======</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>=======</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Creating animation
-Animation saved to C:\Users\olson\Documents\STA9750-2024-FALL\test.gif </code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="do">### join maps data for tmap</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>map <span class="ot">&lt;-</span> tmap_nyc_county_unrate_annual2 <span class="sc">|&gt;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year<span class="sc">&gt;=</span><span class="dv">2011</span> <span class="sc">&amp;</span> year<span class="sc">&lt;=</span><span class="dv">2022</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>() <span class="sc">|&gt;</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_shape</span>() <span class="sc">+</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_polygons</span>(<span class="st">"unrate"</span>, </span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">title =</span> <span class="st">"Unemployment Rate"</span>, </span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">palette =</span> <span class="st">"Greys"</span>,  <span class="co"># Adjust palette as desired</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">style =</span> <span class="st">"cont"</span>) <span class="sc">+</span>   <span class="co"># Continuous scale</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_facets</span>(<span class="at">along =</span> <span class="st">"year"</span>, <span class="at">free.coords =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_text</span>(<span class="st">"label"</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>)<span class="sc">+</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tm_layout</span>(<span class="at">frame =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="fu">invisible</span>(<span class="fu">capture.output</span>({</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tmap_animation</span>(map, </span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>               <span class="at">filename =</span> <span class="st">"test.gif"</span>, </span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>               <span class="at">width =</span> <span class="dv">800</span>, </span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">height =</span> <span class="dv">600</span>, </span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>               <span class="at">delay =</span> <span class="dv">30</span>) <span class="co"># Adjust delay as desired</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>}))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"test.gif"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"test.gif"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
