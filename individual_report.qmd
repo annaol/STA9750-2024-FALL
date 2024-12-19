@@ -320,6 +320,9 @@ invisible(capture.output({
   ) 
 }))
 
+```
+
+```{r}
 knitr::include_graphics("nyc_unemployment2.gif")
 ```
 
@@ -460,6 +463,9 @@ invisible(capture.output({
   )
 }))
 
+```
+
+```{r}
 knitr::include_graphics("nyc_zip_unrate.gif")
 ```
 
@@ -733,5 +739,5 @@ abline(linear_model, col = "red")
 summary(linear_model)
 ```
 
-44% of variability in unemployment rate is reduced when the median income is considered. Based on a very small p-value (~0.0) of F test, we can conclude that this linear regression model is significant and useful and median income could indeed be a significant predictor of unemployment rate.
+44% of variability in unemployment rate is reduced when the median income is considered. Based on a very small p-value (~0.0) of F test, we can conclude that this linear regression model is significant and useful and median income could indeed be a significant predictor of unemployment rate. Median income and unemployment rate have a correlation coefficient of -0.66
 However, because the cause-and-effect relationship between income and unemployment rate is not clear - higher median income could very well be driven by lower unemployment rate - we suggest considering other variables for further analysis.
