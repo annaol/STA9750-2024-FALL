@@ -438,7 +438,7 @@ tmap_zip_unrate_inc_for_sf <- zip_unrate_inc_for_sf |>
 
 ```{r echo=TRUE, warning=FALSE, message=FALSE}
 #| code-fold: true
-#| code-summary: "Code - plotting unemployment over time in NYC zipcodes"
+#| code-summary: "Code - Plotting unemployment over time in NYC zipcodes"
 
 ### join maps data for tmap
 map <- tmap_zip_unrate_inc_for_sf |>
@@ -715,7 +715,7 @@ The nature of the relationship between median income and unemployment could be s
 
 ```{r echo=TRUE, warning=FALSE, message=FALSE}
 #| code-fold: true
-#| code-summary: "Code - Checking regression relation"
+#| code-summary: "Code - Checking fitted regression line"
 
 tmap_zip_unrate_inc_for_sf <- tmap_zip_unrate_inc_for_sf |>
   mutate(
@@ -723,17 +723,28 @@ tmap_zip_unrate_inc_for_sf <- tmap_zip_unrate_inc_for_sf |>
     unrate_pct = unrate / 100
   )
 
-plot(unrate_pct ~ median_income_k,
-  data = tmap_zip_unrate_inc_for_sf,
-  xlab = "Median Income ('000s)",
-  ylab = "Unemployment Rate"
-)
+# Scatter plot with regression line
+ggplot(tmap_zip_unrate_inc_for_sf,
+       aes(x = median_income_k,
+           y = unrate_pct)) +
+  geom_point(color = "grey", size = 1.5) +        
+  geom_smooth(method = "lm", color = "red", se = TRUE) +
+  labs(
+    title = "Scatter Plot with Fitted Regression Line",
+    x = "Median Income ('000s)",
+    y = "Unemployment Rate"
+  ) +
+  theme_minimal()
+```
 
-# Adding fitted line
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+#| code-fold: true
+#| code-summary: "Code - Checking regression relation"
+
+
 linear_model <- lm(unrate_pct ~ median_income_k,
   data = tmap_zip_unrate_inc_for_sf
 )
-abline(linear_model, col = "red")
 
 # Estimation of regression function
 summary(linear_model)
