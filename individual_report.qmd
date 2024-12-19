@@ -1,0 +1,737 @@
+
+---
+title: "What Areas of New York Are Most Affected by Unemployment?"
+---
+
+This report discusses one of the specific analytical questions that were analyzed in the group course project by our team, Apple Watch, and presented on December 11, 2024. The presentation is available upon request and the summary report can be accessed at this link.
+For this analysis, we will look at data from 2011 to 2022 due to availability of specific metrics. We will look at unemployment in NYC on the county- and zipcode levels. As in any data analysis project, we start with obtaining and preparing the data. We will use Census US and FRED databases and we will do that using `tidycensus` and `fredr` packages, respectively. These packages were specifically designed for the purposes of facilitating access to data via API. To execute the code in this analysis, API keys for Census and FRED are required and should be requested in advance - please refer to the notes in the code. We will also obtain and prepare SHAPE files for plotting and put together a mapping file for zip codes and counties.
+
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+#| code-fold: true
+#| code-summary: "Code - installing and loading libraries"
+
+# Installing and loading libraries
+
+if (!require("tidyverse")) install.packages("tidyverse")
+library(tidyverse)
+if (!require("DT")) install.packages("DT")
+library(DT)
+if (!require("dplyr")) install.packages("dplyr")
+library(dplyr)
+if (!require("psych")) install.packages("psych")
+library(psych)
+if (!require("gt")) install.packages("gt")
+library(gt)
+if (!require("formattable")) install.packages("formattable")
+library(formattable)
+if (!require("sqldf")) install.packages("sqldf")
+library(sqldf)
+if (!require("plotly")) install.packages("plotly")
+library(plotly)
+if (!require("ggplot2")) install.packages("ggplot2")
+library(ggplot2)
+if (!require("RColorBrewer")) install.packages("RColorBrewer")
+library(RColorBrewer)
+if (!require("fredr")) install.packages("fredr")
+library(fredr)
+if (!require("tidycensus")) install.packages("tidycensus")
+library(tidycensus)
+if (!require("httr2")) install.packages("httr2")
+library(httr2)
+if (!require("readr")) install.packages("readr")
+library(readr)
+if (!require("sf")) install.packages("sf")
+library(sf)
+if (!require("fredr")) install.packages("fredr")
+library(fredr)
+if (!require("tmap")) install.packages("tmap")
+library(tmap)
+if (!require("knitr")) install.packages("knitr")
+library(knitr)
+if (!require("ggridges")) install.packages("ggridges")
+library(ggridges)
+if (!require("scales")) install.packages("scales")
+library(scales)
+```
+  
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+#| code-fold: true
+#| code-summary: "Code - Read in API keys "
+
+# Load the FRED API key from a local file - Please request it in advance.
+fred_api_key <- readLines("fred.txt")
+fredr_set_key(fred_api_key)
+
+# You also need to initialize the Census API key - it's read in only once the very first time it's used so I commented this line out. Please use your own Census API key if needed.
+# census_api_key("xxxxx", install = TRUE)
+```
+  
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+#| code-fold: true
+#| code-summary: "Code - Getting the SHAPE files for NYC counties"
+
+## counties
+
+if (!file.exists("nyc_borough_boundaries.zip")) {
+  download.file("https://data.cityofnewyork.us/api/geospatial/tqmj-j8zm?method=export&format=Shapefile",
+    destfile = "nyc_borough_boundaries.zip",
+    method = "curl"
+  )
+}
+
+## -
+td <- tempdir()
+zip_contents <- unzip("nyc_borough_boundaries.zip",
+  exdir = td
+)
+
+fname_shp <- zip_contents[grepl("shp$", zip_contents)]
+nyc_county_sf <- read_sf(fname_shp)
+# head(nyc_county_sf)
+```
+  
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+#| code-fold: true
+#| code-summary: "Code - Getting the SHAPE files for NYC zip codes"
+
+
+if (!file.exists("zipcodes_maps.zip")) {
+  download.file("https://www2.census.gov/geo/tiger/GENZ2018/shp/cb_2018_us_zcta510_500k.zip",
+    destfile = "zipcodes_maps.zip",
+    method = "curl"
+  )
+}
+
+
+td <- tempdir()
+zip_contents <- unzip("zipcodes_maps.zip",
+  exdir = td
+)
+
+fname_shp <- zip_contents[grepl("shp$", zip_contents)]
+nyc_zip_codes_sf <- read_sf(fname_shp)
+```
+  
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+#| code-fold: true
+#| code-summary: "Code - Get a mapping file for NYC Zip Codes and Counties"
+
+# here's a list of NYC zipcodes
+url <- "https://raw.githubusercontent.com/erikgregorywebb/nyc-housing/master/Data/nyc-zip-codes.csv"
+
+response <- request(url) |>
+  req_perform()
+
+file_path <- "nyc-zip-codes.csv"
+
+writeBin(response$body, file_path)
+nyc_zip_codes_list <- read_csv(file_path)
+
+nyc_zip_codes_list <- nyc_zip_codes_list |>
+  mutate(zcta = as.character(ZipCode))
+
+nyc_zip_codes_sf2 <- inner_join(nyc_zip_codes_sf,
+  nyc_zip_codes_list,
+  by = c("GEOID10" = "zcta")
+) |>
+  select(GEOID10, Borough, Neighborhood, geometry)
+
+# head(nyc_zip_codes_sf2)
+```
+  
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+#| code-fold: true
+#| code-summary: "Code - Initialize tmap plotting mode"
+
+# it needs to be done only once hence it's listed separately
+tmap_mode("plot")
+```
+  
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+#| code-fold: true
+#| code-summary: "Code - Getting FRED annual unemployment data for NYC counties "
+
+# Search for unemployment rate data series for NY counties
+search_results <- fredr_series_search_text("unemployment rate county")
+
+# Filter for NY counties
+ny_counties <- search_results |>
+  filter(grepl(", NY$", title, ignore.case = TRUE))
+
+# Display the list of NY counties and their series IDs
+# ny_counties_list <- ny_counties |>
+#  select(id, title)
+# print(ny_counties_list)
+
+# Fetch data for all NY counties
+ny_unemployment_data <- lapply(ny_counties$id, function(series_id) {
+  data <- fredr(
+    series_id = series_id,
+    observation_start = as.Date("2010-12-31"),
+    observation_end = as.Date("2023-12-31"), 
+    frequency = "a", # "a" for annual
+    aggregation_method = "avg"
+  )
+  data$county <- ny_counties$title[ny_counties$id == series_id] 
+  return(data)
+}) |>
+  bind_rows()
+
+#### filter to NYC counties
+
+list_of_ny_counties <- c("New York", "Bronx", "Kings", "Queens", "Richmond")
+unrate <- "Unemployment Rate in "
+ny_var <- " County, NY"
+
+ny_list <- rep(ny_var, 5)
+unrate_list <- rep(unrate, 5)
+
+ny_combined_list <- mapply(function(x, y, z) paste(x, y, z, sep = ""), unrate_list,
+  list_of_ny_counties, ny_list,
+  SIMPLIFY = FALSE
+)
+
+# Filter
+ny_unrate_county_filtered <- ny_unemployment_data |>
+  filter(county %in% ny_combined_list)
+
+ny_unrate_county_filtered <- ny_unrate_county_filtered |>
+  mutate(
+    county2 = sub("Unemployment Rate in ", "", county),
+    county3 = sub(", NY", "", county2)
+  ) |>
+  select(date, value, county3)
+
+
+### there are several instances of multiple rates for the same county/year - we'll take avg
+
+ny_unrate_county_filtered2 <- ny_unrate_county_filtered |>
+  group_by(county3, date) |>
+  summarise(unrate = mean(value)) |>
+  ungroup()
+
+nyc_county_unrate_annual <- ny_unrate_county_filtered2 |>
+  mutate(year = year(as.Date(date))) |>
+  mutate(county_name = case_when(
+    county3 == "New York County" ~ "Manhattan",
+    county3 == "Bronx County" ~ "Bronx",
+    county3 == "Kings County" ~ "Brooklyn",
+    county3 == "Queens County" ~ "Queens",
+    county3 == "Richmond County" ~ "Staten Island",
+    TRUE ~ "Unknown"
+  ))
+
+# head(nyc_county_unrate_annual)
+```
+
+
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+#| code-fold: true
+#| code-summary: "Code - Unemployment Trend in NYC Counties"
+
+palette_5counties <- c(
+  "dodgerblue2", "green4", "black", "orange", "#E31A1C"
+)
+
+# create a chart
+
+nyc_unrate_annual2011 <- nyc_county_unrate_annual |>
+  filter(year >= 2011 & year <= 2022) |>
+  mutate()
+
+nyc_annual_unrate_year_plot <- plot_ly(nyc_unrate_annual2011,
+  x = ~year, y = ~unrate,
+  color = ~county_name,
+  type = "scatter",
+  mode = "lines",
+  colors = palette_5counties
+) |>
+  layout(
+    title = "Unemployment Rate by NYC Borough",
+    xaxis = list(
+      title = "Year"
+      #    showgrid = FALSE
+    ),
+    yaxis = list(
+      title = "Unemployment Rate, %"
+      #   showgrid = FALSE
+      # ,
+      #    tickformat = ".0%",
+      #    range = c(0, 1)
+    ),
+    legend = list(
+      orientation = "h", 
+      x = 0.5, 
+      xanchor = "center", 
+      y = -0.2, 
+      font = list(size = 8) 
+    )
+  )
+
+# Show the plot
+
+nyc_annual_unrate_year_plot
+```
+
+
+Unemployment rates across NYC largely follow the same trend as the rest of the US, peaking during uncertain and turbulent times. During the Covid pandemic, the already higher trending unemployment in the Bronx was 3 times higher yet compared to the pre-pandemic levels. But even Manhattan, a much more advantaged area, experienced a significant spike (+2X) in unemployment rate.
+
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+#| code-fold: true
+#| code-summary: "Code - Animated plot of annual unemployment in NYC counties"
+
+###  create a df for plotting
+
+tmap_nyc_county_unrate_annual <- left_join(nyc_county_unrate_annual,
+  nyc_county_sf,
+  by = c("county_name" = "boro_name")
+)
+
+tmap_nyc_county_unrate_annual2 <- tmap_nyc_county_unrate_annual |>
+  select(year, unrate, county_name, geometry)
+
+tmap_nyc_county_unrate_annual2$label <- paste(tmap_nyc_county_unrate_annual2$county_name,
+  tmap_nyc_county_unrate_annual2$unrate,
+  sep = ": "
+)
+
+
+### join maps data for tmap
+
+map <- tmap_nyc_county_unrate_annual2 |>
+  filter(year >= 2011 & year <= 2022) |>
+  st_as_sf() |>
+  tm_shape() +
+  tm_polygons("unrate",
+    title = "Unemployment Rate",
+    palette = "Greys", # 
+    style = "cont"
+  ) + 
+  tm_facets(along = "year", free.coords = FALSE) +
+  tm_text("label", size = 1, col = "red", fontface = "bold") +
+  tm_layout(frame = FALSE)
+
+invisible(capture.output({
+  tmap_animation(map,
+    filename = "nyc_unemployment2.gif",
+    width = 800,
+    height = 600,
+    delay = 60
+  ) 
+}))
+
+knitr::include_graphics("nyc_unemployment2.gif")
+```
+
+There are observable differences in unemployment across boroughs, with Bronx rates consistently trending higher than in other boroughs.
+But NYC boroughs are populous and large. For example, Brooklyn alone is the fourth most populous city not even in New York state but in the entire country. It’s not only big - it’s also very diverse. Within each borough, there are multiple neighborhoods that greatly differ from each other in a number of ways. 
+
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+#| code-fold: true
+#| code-summary: "Code - Getting data for unemployment in NYC zip codes"
+
+## loop for all years - available from 2011 to 2022
+years <- lst(2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022)
+
+# list of NYC zipcodes
+zctas <- as.list(as.character(nyc_zip_codes_list$ZipCode))
+
+# Initialize an empty list to store results
+results <- list()
+
+# Loop through each year
+for (year in years) {
+  message("Fetching data for year: ", year)
+
+  tryCatch(
+    {
+      # Fetch ACS data for the current year
+      data <- get_acs(
+        geography = "zcta",
+        variables = c(
+          unemployed = "B23025_005E", # Civilian labor force: Unemployed
+          labor_force = "B23025_003E", # Total civilian labor force
+          total_population_16plus = "B23025_001E", # Total population 16+
+          employed = "B23025_004E", # Civilian labor force: Employed
+          median_income = "B19013_001E"
+        ),
+        year = year,
+        survey = "acs5" # 5-year estimates
+      )
+
+      # Store the data in the results list
+      results[[as.character(year)]] <- data
+    },
+    error = function(e) {
+      message("Error fetching data for year: ", year, ": ", e$message)
+    }
+  )
+}
+
+# Combine all results into a single dataframe
+combined_data <- bind_rows(results, .id = "year")
+
+combined_data$zcta <- gsub("ZCTA5 ", "", combined_data$NAME)
+# head(combined_data)
+
+nyc_zip_codes <- nyc_zip_codes_list |>
+  mutate(zcta = as.character(ZipCode))
+
+combined_data_nyc <- inner_join(combined_data, nyc_zip_codes_list, by = c("zcta" = "zcta"))
+
+combined_data_nyc2 <- combined_data_nyc |>
+  mutate(variable2 = recode(variable,
+    "B23025_005" = "unemployed",
+    "B23025_003" = "labor_force",
+    "B23025_001" = "total_population_16plus",
+    "B23025_004" = "employed",
+    "B19013_001" = "median_income"
+  ))
+
+## create a df with unemployed totals only
+unemployed_df <- combined_data_nyc2 |>
+  filter(variable2 == "unemployed") |>
+  select(year, estimate, zcta) |>
+  rename(unemployed = estimate)
+
+## create a df with labor force total only
+laborforce_df <- combined_data_nyc2 |>
+  filter(variable2 == "labor_force") |>
+  select(year, estimate, zcta) |>
+  rename(laborforce = estimate)
+
+## create a df with median income total only
+median_income_df <- combined_data_nyc2 |>
+  filter(variable2 == "median_income") |>
+  select(year, estimate, zcta) |>
+  rename(median_income = estimate)
+
+nyc_unrate_zip_df <- inner_join(unemployed_df,
+  laborforce_df,
+  by = c("year" = "year", "zcta" = "zcta")
+)
+
+nyc_unrate_inc_zip_df <- inner_join(nyc_unrate_zip_df,
+  median_income_df,
+  by = c("year" = "year", "zcta" = "zcta")
+)
+
+nyc_unrate_inc_zip_df <- nyc_unrate_inc_zip_df |>
+  mutate(unrate = 100 * round(unemployed / laborforce, 2), na.rm = TRUE)
+
+nyc_unrate_inc_zip_df <- na.omit(nyc_unrate_inc_zip_df)
+
+
+## join zip code data and zip sf file
+
+zip_unrate_inc_for_sf <- left_join(nyc_unrate_inc_zip_df,
+  nyc_zip_codes_sf2,
+  by = c("zcta" = "GEOID10")
+)
+
+tmap_zip_unrate_inc_for_sf <- zip_unrate_inc_for_sf |>
+  select(year, unrate, median_income, zcta, Neighborhood, Borough, geometry)
+```
+
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+#| code-fold: true
+#| code-summary: "Code - plotting unemployment over time in NYC zipcodes"
+
+### join maps data for tmap
+map <- tmap_zip_unrate_inc_for_sf |>
+  st_as_sf() |>
+  tm_shape() +
+  tm_polygons("unrate",
+    title = "Unemployment Rate",
+    palette = "Blues", 
+    style = "cont",
+    fill.na = "red"
+  ) + # Continuous scale
+  tm_facets(along = "year", free.coords = FALSE) +
+  tm_layout(frame = FALSE)
+# tm_text("label", size = 1, col = "red", fontface = "bold")
+
+invisible(capture.output({
+  tmap_animation(map,
+    filename = "nyc_zip_unrate.gif",
+    width = 800,
+    height = 600,
+    delay = 60
+  )
+}))
+
+knitr::include_graphics("nyc_zip_unrate.gif")
+```
+
+
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+#| code-fold: true
+#| code-summary: "Code - Average unemployment rates for zip codes"
+
+
+temp_df1 <- tmap_zip_unrate_inc_for_sf |>
+  filter(year >= 2011 & year <= 2022) |>
+  group_by(Borough, Neighborhood) |>
+  summarise(avg_unrate_zip = mean(unrate)) |>
+  ungroup()
+
+temp_df2 <- tmap_zip_unrate_inc_for_sf |>
+  filter(year >= 2011 & year <= 2022) |>
+  group_by(Borough) |>
+  summarise(avg_unrate = mean(unrate)) |>
+  ungroup()
+
+temp_df3 <- left_join(temp_df1, temp_df2, by = c("Borough" = "Borough"))
+
+temp_df3 <- temp_df3 |>
+  mutate(delta = round((avg_unrate_zip - avg_unrate), 2))
+
+temp_df4 <- sqldf(
+  "
+  with a as (
+  select t.*,
+  row_number() over(partition by Borough order by delta asc ) as rn_min,
+  row_number() over(partition by Borough order by delta desc ) as rn_max
+  from temp_df3 t
+  )
+
+  select Borough,
+  Neighborhood,
+  avg_unrate,
+  avg_unrate_zip,
+  delta
+  from a
+  where 1=1
+  and (rn_min=1 or rn_max=1)
+
+  ;
+  "
+)
+
+
+temp_df4 |>
+  mutate(
+    avg_unrate = round(avg_unrate, 2),
+    avg_unrate_zip = round(avg_unrate_zip, 2)
+  ) |>
+  gt() |>
+  tab_header(
+    title = "Neighborhoods with Smallest and Largest Unemployment Rates",
+    subtitle = "2011-2022"
+  ) |>
+  tab_options(
+    table.font.size = 10,
+    heading.align = "center"
+  ) |>
+  cols_label(
+    avg_unrate = "Borough Rate",
+    avg_unrate_zip = "Neighborhood Rate",
+    delta = "Delta from Borough Average (pp)"
+  ) |>
+  cols_align(
+    align = "left",
+    columns = everything()
+  )
+```
+
+Unemployment rate in Greenpoint, one of the more affluent areas in Brooklyn, is almost 3 percentage points lower than the average for the county, whereas in Bushwick and Williamsburg it’s 2 percentage points above the average. And we see this in each and every borough:  
+1) in the Bronx, unemployment rate in Central Bronx is 3.8 percentage points higher and in Kingsbridge and Riverdale - 3.7 percentage points lower than the county average rate of 12%.  
+2) in Queens, unemployment rate in Central Bronx is 3.8 percentage points higher and in Kingsbridge and Riverdale - 3.7 percentage points lower than the county average rate of 8%.  
+3) in Manhattan, unemployment rate in Central Harlem is 4.76 percentage points higher and in Upper East Side  - 2.62 percentage points lower than the county average rate of 7%.  
+4) in Staten Island, unemployment rate in Port Richmond is 0.9 percentage points higher and in South Shore - 0.8 percentage points lower than the county average rate of 6%.  
+
+These differences could be attributed to a number of factors, most of which could be traced back to characteristics of population within specific neighborhoods. While this analysis is outside of the scope of this specific question, we  can take a look at median income by zip codes to see whether the unemployment in a given neighborhood can be linked to a financial wellbeing of its residence.
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+#| code-fold: true
+#| code-summary: "Code - Plotting median income in NYC zip codes"
+
+### join maps data for tmap
+
+map <- tmap_zip_unrate_inc_for_sf |>
+  st_as_sf() |>
+  tm_shape() +
+  tm_polygons("median_income",
+    title = "Median Income",
+    palette = "Greens", # Adjust palette as desired
+    style = "cont",
+    fill.na = "red"
+  ) + # Continuous scale
+  tm_facets(along = "year", free.coords = FALSE) +
+  tm_layout(frame = FALSE)
+# tm_text("label", size = 1, col = "red", fontface = "bold")
+
+invisible(capture.output({
+  tmap_animation(map,
+    filename = "nyc_zip_median_income.gif",
+    width = 800,
+    height = 600,
+    delay = 60
+  ) #
+}))
+
+knitr::include_graphics("nyc_zip_median_income.gif")
+```
+
+Similarly to our observations of unemployment rates, different areas within counties appear to do significantly better - or worse - than their neighbors. 
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+#| code-fold: true
+#| code-summary: "Code - Average unemployment rates for zip codes"
+
+
+temp_df11 <- tmap_zip_unrate_inc_for_sf |>
+  filter(year >= 2011 & year <= 2022) |>
+  group_by(Borough, Neighborhood) |>
+  summarise(avg_median_income_zip = mean(median_income)) |>
+  ungroup()
+
+temp_df21 <- tmap_zip_unrate_inc_for_sf |>
+  filter(year >= 2011 & year <= 2022) |>
+  group_by(Borough) |>
+  summarise(avg_median_income = mean(median_income)) |>
+  ungroup()
+
+temp_df31 <- left_join(temp_df11, temp_df21, by = c("Borough" = "Borough"))
+
+temp_df31 <- temp_df31 |>
+  mutate(delta = round((avg_median_income_zip - avg_median_income) / avg_median_income, 2))
+
+temp_df41 <- sqldf(
+  "
+  with a as (
+  select t.*,
+  row_number() over(partition by Borough order by delta asc ) as rn_min,
+  row_number() over(partition by Borough order by delta desc ) as rn_max
+  from temp_df31 t
+  )
+
+  select Borough,
+  Neighborhood,
+  avg_median_income,
+  avg_median_income_zip,
+  delta
+  from a
+  where 1=1
+  and (rn_min=1 or rn_max=1)
+
+  ;
+  "
+)
+
+
+temp_df41 |>
+  mutate(
+    avg_median_income = round(avg_median_income, 0),
+    avg_median_income_zip = round(avg_median_income_zip, 0),
+    delta = scales::percent(delta, accuracy = 1)
+  ) |>
+  mutate(
+    avg_median_income = scales::dollar(avg_median_income),
+    avg_median_income_zip = scales::dollar(avg_median_income_zip)
+  ) |>
+  gt() |>
+  tab_header(
+    title = "Neighborhoods with Smallest and Largest Median Income",
+    subtitle = "2011-2022"
+  ) |>
+  tab_options(
+    table.font.size = 10,
+    heading.align = "center"
+  ) |>
+  cols_label(
+    avg_median_income = "Borough Income",
+    avg_median_income_zip = "Neighborhood Income",
+    delta = "Delta vs Borough Average (%)"
+  ) |>
+  cols_align(
+    align = "left",
+    columns = everything()
+  )
+```
+
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+#| code-fold: true
+#| code-summary: "Code - Ridge plot of median income by borough"
+
+custom_colors <- c(
+  "Staten Island" = "#E31A1C",
+  "Bronx" = "dodgerblue2",
+  "Brooklyn" = "green4",
+  "Queens" = "orange",
+  "Manhattan" = "black"
+)
+
+ggplot(
+  tmap_zip_unrate_inc_for_sf,
+  aes(
+    x = median_income,
+    y = Borough,
+    fill = Borough
+  )
+) +
+  geom_density_ridges(alpha = 0.7) +
+  scale_fill_manual(values = custom_colors) +
+  scale_x_continuous(labels = label_number(scale = 1, big.mark = ",")) +
+  labs(
+    title = "Distribution of Median Income in Neighborhoods by Boroughs",
+    x = "Median Income",
+    y = "Borough"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+Plotting median income for all available years and neighborhoods, we can see the underlying differences among counties more clearly. Majority of neighborhoods in Brooklyn and the Bronx tend to be more low-income, whereas Queens appears to be solidly middle-class, and Manhattan has both poverty and extreme wealth.
+
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+#| code-fold: true
+#| code-summary: "Code - Scatter plot of unemployment Vs median income"
+
+unrate_mi_plot <- plot_ly(
+  data = tmap_zip_unrate_inc_for_sf,
+  x = ~median_income,
+  y = ~unrate,
+  color = ~Borough,
+  type = "scatter",
+  mode = "markers",
+  colors = palette_5counties,
+  marker = list(size = 4),
+  text = ~Borough, # Hover text
+  hoverinfo = "text+x+y"
+) |>
+  layout(
+    title = "Scatter Plot of Unemployment Rate vs Median Income by Borough",
+    xaxis = list(title = "Median Income"),
+    yaxis = list(title = "Unemployment Rate")
+  )
+
+unrate_mi_plot
+```
+The nature of the relationship between median income and unemployment could be seen in this chart - it's negative and relatively strong. We can also check if there exists a regression relation between the two:
+
+```{r echo=TRUE, warning=FALSE, message=FALSE}
+#| code-fold: true
+#| code-summary: "Code - Checking regression relation"
+
+tmap_zip_unrate_inc_for_sf <- tmap_zip_unrate_inc_for_sf |>
+  mutate(
+    median_income_k = median_income / 1000,
+    unrate_pct = unrate / 100
+  )
+
+plot(unrate_pct ~ median_income_k,
+  data = tmap_zip_unrate_inc_for_sf,
+  xlab = "Median Income ('000s)",
+  ylab = "Unemployment Rate"
+)
+
+# Adding fitted line
+linear_model <- lm(unrate_pct ~ median_income_k,
+  data = tmap_zip_unrate_inc_for_sf
+)
+abline(linear_model, col = "red")
+
+# Estimation of regression function
+summary(linear_model)
+```
+
+44% of variability in unemployment rate is reduced when the median income is considered. Based on a very small p-value (~0.0) of F test, we can conclude that this linear regression model is significant and useful and median income could indeed be a significant predictor of unemployment rate.
+However, because the cause-and-effect relationship between income and unemployment rate is not clear - higher median income could very well be driven by lower unemployment rate - we suggest considering other variables for further analysis.
