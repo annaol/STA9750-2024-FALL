@@ -715,7 +715,7 @@ The nature of the relationship between median income and unemployment could be s
 
 ```{r echo=TRUE, warning=FALSE, message=FALSE}
 #| code-fold: true
-#| code-summary: "Code - Checking fitted regression line"
+#| code-summary: "Code - Plotting fitted regression line"
 
 tmap_zip_unrate_inc_for_sf <- tmap_zip_unrate_inc_for_sf |>
   mutate(
@@ -724,7 +724,7 @@ tmap_zip_unrate_inc_for_sf <- tmap_zip_unrate_inc_for_sf |>
   )
 
 # Scatter plot with regression line
-ggplot(tmap_zip_unrate_inc_for_sf,
+gplot <-ggplot(tmap_zip_unrate_inc_for_sf,
        aes(x = median_income_k,
            y = unrate_pct)) +
   geom_point(color = "grey", size = 1.5) +        
@@ -735,6 +735,8 @@ ggplot(tmap_zip_unrate_inc_for_sf,
     y = "Unemployment Rate"
   ) +
   theme_minimal()
+
+gplot
 ```
 
 ```{r echo=TRUE, warning=FALSE, message=FALSE}
