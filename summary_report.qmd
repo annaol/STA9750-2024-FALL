@@ -7,7 +7,8 @@ project:
 ---
 
 ###### What does unemployment look like over time?  
-```{r}
+```{r echo=FALSE}
+library(knitr)
 knitr::include_graphics("unemployment_animation_cc1.gif")
 ```
 
@@ -41,7 +42,7 @@ Unemployment rates across NYC largely follow the same trend as the rest of the U
 
 ![](summary_report_ao1.PNG)  
 There are observable differences in unemployment across boroughs, with Bronx rates consistently trending higher than in other boroughs.
-```{r}
+```{r echo=FALSE}
 knitr::include_graphics("nyc_unemployment2.gif")
 ```
 But NYC boroughs are populous and large. For example, Brooklyn alone is the fourth most populous city not even in New York state but in the entire country. It’s not only big - it’s also very diverse. Within each borough, there are multiple neighborhoods that greatly differ from each other in a number of ways. 
