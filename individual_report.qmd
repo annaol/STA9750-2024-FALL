@@ -322,7 +322,7 @@ invisible(capture.output({
 
 ```
 
-```{r}
+```{r echo=FALSE}
 knitr::include_graphics("nyc_unemployment2.gif")
 ```
 
@@ -465,7 +465,7 @@ invisible(capture.output({
 
 ```
 
-```{r}
+```{r echo=FALSE}
 knitr::include_graphics("nyc_zip_unrate.gif")
 ```
 
@@ -666,7 +666,7 @@ custom_colors <- c(
   "Manhattan" = "black"
 )
 
-ggplot(
+plot1<-ggplot(
   tmap_zip_unrate_inc_for_sf,
   aes(
     x = median_income,
@@ -684,6 +684,8 @@ ggplot(
   ) +
   theme_minimal() +
   theme(legend.position = "none")
+
+plot1
 ```
 Plotting median income for all available years and neighborhoods, we can see the underlying differences among counties more clearly. Majority of neighborhoods in Brooklyn and the Bronx tend to be more low-income, whereas Queens appears to be solidly middle-class, and Manhattan has both poverty and extreme wealth.
 
@@ -724,7 +726,7 @@ tmap_zip_unrate_inc_for_sf <- tmap_zip_unrate_inc_for_sf |>
   )
 
 # Scatter plot with regression line
-gplot <-ggplot(tmap_zip_unrate_inc_for_sf,
+plot2<-ggplot(tmap_zip_unrate_inc_for_sf,
        aes(x = median_income_k,
            y = unrate_pct)) +
   geom_point(color = "grey", size = 1.5) +        
@@ -736,7 +738,7 @@ gplot <-ggplot(tmap_zip_unrate_inc_for_sf,
   ) +
   theme_minimal()
 
-gplot
+plot2
 ```
 
 ```{r echo=TRUE, warning=FALSE, message=FALSE}
