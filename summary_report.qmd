@@ -60,12 +60,12 @@ knitr::include_graphics("education_anim_hs3.gif")
 ```
 Here we see interestingly, that as expected the lower education groups have a higher unemployment, but as the time goes on they get closer and closer. While this shows us that unemployment is still quite different among educational groups, we see that over time the difference might be fading, indicating that there might be more opportunities now for people with less educational attainment.  
 
-Next we'll look at the averages of all the groups side by side.
+Next we'll look at the averages of all the groups side by side.  
 ![](summary_report_hs4.PNG)  
-We see above that Race, in this case black, and Education (primary school) have the highest average unemployment rate. The fact that these two are the highest leads me to believe that there might be a correlation here and perhaps, education is the true underlying factor here that is driving these other groups to have higher levels of unemployment. To dig a bit deeper I will look at the number of men in each race with at least a bachelor's degree. After obtaining that we can filter down the for the boroughs, and make a proportion of at least a bachelor's degree using the races respective total population.
+We see above that Race, in this case black, and Education (primary school) have the highest average unemployment rate. The fact that these two are the highest leads me to believe that there might be a correlation here and perhaps, education is the true underlying factor here that is driving these other groups to have higher levels of unemployment. To dig a bit deeper I will look at the number of men in each race with at least a bachelor's degree. After obtaining that we can filter down the for the boroughs, and make a proportion of at least a bachelor's degree using the races respective total population.  
 ![](summary_report_hs5.PNG)  
-You can see that the black and then Latino group is significantly lower than the White group. This aligns well with the unemployment by race as Black and Latino were the top 2 highest unemployment see above, however black is slightly higher than Latino which was unexpected. Let's see how this comparison looks geographically.
-![](summary_report_hs6.PNG)  
+You can see that the black and then Latino group is significantly lower than the White group. This aligns well with the unemployment by race as Black and Latino were the top 2 highest unemployment see above, however black is slightly higher than Latino which was unexpected. Let's see how this comparison looks geographically.  
+![](summary_report_hs6.PNG)    
 We can see that there is a good amount of overlap here with the black population and portion of lower education. We can also build a regression model to see which groups contribute to unemployment the most.
 
 ###### What areas of New York are most affected by unemployment?  
