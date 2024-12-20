@@ -8,7 +8,7 @@
 
 <meta name="author" content="Team Apple Watch">
 
-<title>Summary Report – STA 9750 2024 Submission Material</title>
+<title>Summary Report: What demographic factors best explain unemployment trends across NYC? – STA 9750 2024 Submission Material</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -98,7 +98,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Summary Report</h1>
+<h1 class="title">Summary Report: What demographic factors best explain unemployment trends across NYC?</h1>
 </div>
 
 
@@ -147,6 +147,46 @@ This gives us our first into race as one of our three demographic factors we con
 We find that, when we take each of the available races (black, hispanic, and white) and compare against the men’s countrywide unemployment rate, the exact same trends follow to the racial unemployment rate v countrywide overall (without crossing with gender). Consistently, the black unemployment rate is the highest, followed by hispanic, with the countrywide average falling below, followed by the white unemployment rate falling below the countrywide average.<br>
 <img src="summary_report_cc7.PNG" class="img-fluid"><br>
 Again, when looking at the same available race x gender unemployment rates (black, hispanic, and white), women follow the same trend as races in general and men x race. This overwhelmingly displays the racial disparity in unemployment rates, which we continue to look into further throughout the project.</p>
+</section>
+<section id="what-demographic-groups-are-most-impacted-by-unemployment" class="level6">
+<h6 class="anchored" data-anchor-id="what-demographic-groups-are-most-impacted-by-unemployment">What demographic groups are most impacted by unemployment?</h6>
+<p>n this section, we will delve into the demographic groups most impacted by unemployment, drawing connections to the broader unemployment landscape in New York. Specifically, we will examine key demographic categories such as Race and Educational Attainment while investigating potential underlying factors that may serve as root causes influencing these variables. This analysis aims to uncover deeper insights into the socioeconomic dynamics shaping unemployment trends in the region.<br>
+First let’s see what the variables look like over time. Let’s start with Race.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="race_anim_hs2.gif" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>As you can see there is an overall decrease in Unemployment over time with a slight hint at upward movement at the year 2020 (COVID -19 bump). We can also see that there are certain races that start, and stay higher all the way to the end of the timeline. Specifically the Black group, with the Hispanic group underneath it but still higher than the rest. Another interesting point from this graphic is how straight and narrow the line for White race is, especially when compared to the spread of the other groups which seem to form a thick band. Moving on to the demographic we have gender.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="gender_anim_hs1.gif" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>As you can see from this plot the Male scatter starts at a higher intercept and converges into the same scatter. This is an interesting output as one would conventionally assume that women would face more adversity in the workplace.<br>
+Next we look at the education variable:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="education_anim_hs3.gif" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Here we see interestingly, that as expected the lower education groups have a higher unemployment, but as the time goes on they get closer and closer. While this shows us that unemployment is still quite different among educational groups, we see that over time the difference might be fading, indicating that there might be more opportunities now for people with less educational attainment.</p>
+<p>Next we’ll look at the averages of all the groups side by side. <img src="summary_report_hs4.PNG" class="img-fluid"><br>
+We see above that Race, in this case black, and Education (primary school) have the highest average unemployment rate. The fact that these two are the highest leads me to believe that there might be a correlation here and perhaps, education is the true underlying factor here that is driving these other groups to have higher levels of unemployment. To dig a bit deeper I will look at the number of men in each race with at least a bachelor’s degree. After obtaining that we can filter down the for the boroughs, and make a proportion of at least a bachelor’s degree using the races respective total population. <img src="summary_report_hs5.PNG" class="img-fluid"><br>
+You can see that the black and then Latino group is significantly lower than the White group. This aligns well with the unemployment by race as Black and Latino were the top 2 highest unemployment see above, however black is slightly higher than Latino which was unexpected. Let’s see how this comparison looks geographically. <img src="summary_report_hs6.PNG" class="img-fluid"><br>
+We can see that there is a good amount of overlap here with the black population and portion of lower education. We can also build a regression model to see which groups contribute to unemployment the most.</p>
 </section>
 <section id="what-areas-of-new-york-are-most-affected-by-unemployment" class="level6">
 <h6 class="anchored" data-anchor-id="what-areas-of-new-york-are-most-affected-by-unemployment">What areas of New York are most affected by unemployment?</h6>
