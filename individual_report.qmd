@@ -3,7 +3,7 @@
 title: "What Areas of New York Are Most Affected by Unemployment?"
 ---
 
-This report discusses one of the specific analytical questions that were analyzed in the group course project by our team, Apple Watch, and presented on December 11, 2024. The presentation is available upon request and the summary report can be accessed at this link.
+This report discusses one of the specific analytical questions that were analyzed in the group course project by our team, Apple Watch, and presented on December 11, 2024. The presentation is available upon request and the summary report can be accessed at this [link](https://annaol.github.io/STA9750-2024-FALL/summary_report.html).  
 For this analysis, we will look at data from 2011 to 2022 due to availability of specific metrics. We will look at unemployment in NYC on the county- and zipcode levels. As in any data analysis project, we start with obtaining and preparing the data. We will use Census US and FRED databases and we will do that using `tidycensus` and `fredr` packages, respectively. These packages were specifically designed for the purposes of facilitating access to data via API. To execute the code in this analysis, API keys for Census and FRED are required and should be requested in advance - please refer to the notes in the code. We will also obtain and prepare SHAPE files for plotting and put together a mapping file for zip codes and counties.
 
 ```{r echo=TRUE, warning=FALSE, message=FALSE}
